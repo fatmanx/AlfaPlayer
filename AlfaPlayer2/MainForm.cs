@@ -7,7 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-
+using System.Text;
 using System.Windows.Forms;
 
 namespace AlfaPlayer2
@@ -20,7 +20,7 @@ namespace AlfaPlayer2
 
         private byte[] WMA_HEADER = new byte[] { 0x30, 0x26, 0xB2, 0x75, 0x8E, 0x66, 0xCF, 0x11, 0xA6, 0xD9, 0x00, 0xAA, 0x00, 0x62, 0xCE, 0x6C };
 
-        private int scrollPos = 0;
+
 
         private WaveStream reader;
 
@@ -473,6 +473,12 @@ namespace AlfaPlayer2
                     {
                         labelSongTitle.Tag = string.Format("{0}", Path.GetFileName(tag.Name));
                     }
+                    marqueeSB = new StringBuilder(" * " + labelSongTitle.Tag.ToString());
+                    
+                    
+                    marqueeSB.Append(marqueeSB.ToString() + marqueeSB.ToString() + marqueeSB.ToString());
+
+
                 }
                 //Console.WriteLine(">>> {0}", reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds);
                 if (reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds < 300)
@@ -482,29 +488,40 @@ namespace AlfaPlayer2
                 }
             }
 
-          
+
             if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
             {
                 //SystemInformation.PowerStatus.BatteryLifePercent
                 labelBatteryInfo.BackColor = Properties.Settings.Default.OnBatteryColor;
             }
-            labelBatteryInfo.Text = string.Format("{0:00}", 100*SystemInformation.PowerStatus.BatteryLifePercent);
+            labelBatteryInfo.Text = string.Format("{0:00}", 100 * SystemInformation.PowerStatus.BatteryLifePercent);
+
         }
 
+        private int scrollPos = 0;
+        StringBuilder marqueeSB = new StringBuilder();
         private void timerMarquee_Tick(object sender, EventArgs e)
         {
             if (labelSongTitle.Tag != null)
             {
-                string t = labelSongTitle.Tag.ToString();
-                t = t + " * " + t + " * " + t;
-                if (scrollPos > t.Length)
+                //string t = labelSongTitle.Tag.ToString();
+                var tl = labelSongTitle.Tag.ToString().Length;
+                //t = t + " * " + t + " * " + t + " * " + t + " * " + t + " * " + t;
+                //if (scrollPos > tl)
+                //{
+                //    scrollPos = 0;
+                //}
+                //labelSongTitle.Text = t.Substring(scrollPos);
+                labelSongTitle.Text = marqueeSB.ToString(scrollPos, marqueeSB.Length-scrollPos);
+
+                if (scrollPos > tl+3)
                 {
                     scrollPos = 0;
                 }
 
-                labelSongTitle.Text = t.Substring(scrollPos) + " * " + t.Substring(0, scrollPos);
+                    
 
-                scrollPos = (scrollPos + 1) % t.Length;
+                scrollPos = (scrollPos + 1) % tl;
             }
 
         }
