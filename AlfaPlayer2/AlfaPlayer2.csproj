@@ -130,6 +130,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\md\Documents\Visual Studio 2015\Projects\AlfaPlayer2\NAudio.Flac\NAudio.Flac.csproj">
+      <Project>{1bd0fa41-17b8-494c-bd88-5bf5835f6983}</Project>
+      <Name>NAudio.Flac</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
