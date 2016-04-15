@@ -261,6 +261,7 @@ namespace AlfaPlayer2
             SeekToSecond(lastFilePos);
             listBoxFilePanel.Select();
             timerPlayer.Enabled = true;
+            timerMarquee.Enabled = true;
         }
 
         private void InitFilePanel()
@@ -306,7 +307,7 @@ namespace AlfaPlayer2
         private void SetFolderLabel(string folder)
         {
             groupBox1.Tag = folder;
-            int max = 50;
+            int max = 30;
             if (folder.Length > max)
             {
                 int dif = folder.Length - max;
@@ -481,6 +482,17 @@ namespace AlfaPlayer2
                 }
             }
 
+          
+            if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
+            {
+                //SystemInformation.PowerStatus.BatteryLifePercent
+                labelBatteryInfo.BackColor = Properties.Settings.Default.OnBatteryColor;
+            }
+            labelBatteryInfo.Text = string.Format("{0:00}", 100*SystemInformation.PowerStatus.BatteryLifePercent);
+        }
+
+        private void timerMarquee_Tick(object sender, EventArgs e)
+        {
             if (labelSongTitle.Tag != null)
             {
                 string t = labelSongTitle.Tag.ToString();
@@ -495,12 +507,6 @@ namespace AlfaPlayer2
                 scrollPos = (scrollPos + 1) % t.Length;
             }
 
-            if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
-            {
-                //SystemInformation.PowerStatus.BatteryLifePercent
-                labelBatteryInfo.BackColor = Properties.Settings.Default.OnBatteryColor;
-            }
-            labelBatteryInfo.Text = string.Format("{0:00}", 100*SystemInformation.PowerStatus.BatteryLifePercent);
         }
     }
 }
