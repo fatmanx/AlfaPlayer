@@ -1,0 +1,57 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AlfaPlayer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="FolderTextColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Teal</Value>
+    </Setting>
+    <Setting Name="TitleBackColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">31, 36, 69</Value>
+    </Setting>
+    <Setting Name="LastFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">F:\DATA\MUSIC\www.s-a-f.ro\music\mp3\</Value>
+    </Setting>
+    <Setting Name="SelectedItemBackColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">DarkCyan</Value>
+    </Setting>
+    <Setting Name="SelectedItemForeColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Cyan</Value>
+    </Setting>
+    <Setting Name="ProgressForeColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Teal</Value>
+    </Setting>
+    <Setting Name="BackgroundColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">31, 36, 69</Value>
+    </Setting>
+    <Setting Name="ProgressTextColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Cyan</Value>
+    </Setting>
+    <Setting Name="TitleTextColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Cyan</Value>
+    </Setting>
+    <Setting Name="FilePanelTextColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">DarkTurquoise</Value>
+    </Setting>
+    <Setting Name="FilePanelFolderTextColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Teal</Value>
+    </Setting>
+    <Setting Name="LastFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">F:\DATA\MUSIC\www.s-a-f.ro\music\mp3\02 Mermaids.mp3</Value>
+    </Setting>
+    <Setting Name="LastFilePos" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="MaxVolume" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">0.2</Value>
+    </Setting>
+    <Setting Name="SelectedSpecialItemForeColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">0, 192, 192</Value>
+    </Setting>
+    <Setting Name="AboutBoxBackColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">41, 46, 79</Value>
+    </Setting>
+    <Setting Name="OnBatteryColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
