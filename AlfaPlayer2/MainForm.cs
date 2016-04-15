@@ -3,12 +3,10 @@ using NAudio.WindowsMediaFormat;
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 using System.Windows.Forms;
 
@@ -16,9 +14,43 @@ namespace AlfaPlayer2
 {
     public partial class MainForm : Form
     {
+        private byte[] FLAC_HEADER = new byte[] { 0x66, 0x4C, 0x61, 0x43, 0x00, 0x00, 0x00, 0x22 };
+
+        private byte[] MP3_HEADER = new byte[] { 0x49, 0x44, 0x33 };
+
+        private byte[] WMA_HEADER = new byte[] { 0x30, 0x26, 0xB2, 0x75, 0x8E, 0x66, 0xCF, 0x11, 0xA6, 0xD9, 0x00, 0xAA, 0x00, 0x62, 0xCE, 0x6C };
+
+        private int scrollPos = 0;
+
+        private WaveStream reader;
+
+        private TagLib.File tag;
+
+        private WaveOut waveOut;
+
+        private float maxVolume = 0.5f;
+
+        private DateTime lastSeekForward;
+
+        private DateTime lastSeekBackward;
+
+        private string lastFolder = @"F:\DATA\MUSIC\www.s-a-f.ro\music\";
+
+        private string lastFile = @"F:\DATA\MUSIC\www.s-a-f.ro\music\07-the_smoke-upm.mp3";
+
+        private double lastFilePos = 0;
+
         public MainForm()
         {
             InitializeComponent();
+        }
+
+        private enum FileType
+        {
+            None,
+            FLAC,
+            MP3,
+            WMA
         }
 
         private void listBoxFilePanel_DrawItem(object sender, DrawItemEventArgs e)
@@ -47,22 +79,7 @@ namespace AlfaPlayer2
                 b = listBoxFilePanel.selectedSpecialItemForeBrush;
             }
             e.Graphics.DrawString(sss, e.Font, b, r, StringFormat.GenericDefault);
-
-
         }
-
-        private byte[] FLAC_HEADER = new byte[] { 0x66, 0x4C, 0x61, 0x43, 0x00, 0x00, 0x00, 0x22 };
-        private byte[] MP3_HEADER = new byte[] { 0x49, 0x44, 0x33 };
-        private byte[] WMA_HEADER = new byte[] { 0x30, 0x26, 0xB2, 0x75, 0x8E, 0x66, 0xCF, 0x11, 0xA6, 0xD9, 0x00, 0xAA, 0x00, 0x62, 0xCE, 0x6C };
-
-        private enum FileType
-        {
-            None,
-            FLAC,
-            MP3,
-            WMA
-        }
-
         private FileType DetectFileType(string fn)
         {
             FileType ft = FileType.None;
@@ -103,8 +120,6 @@ namespace AlfaPlayer2
             return ft;
         }
 
-
-
         private void PlayNext()
         {
             if (listBoxFilePanel.SelectedIndex < listBoxFilePanel.Items.Count - 1)
@@ -122,14 +137,6 @@ namespace AlfaPlayer2
             }
             OpenFile(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + listBoxFilePanel.SelectedItem.ToString());
         }
-
-        private int scrollPos = 0;
-
-
-        private WaveStream reader;
-        private TagLib.File tag;
-        private WaveOut waveOut;
-
         private void OpenFile(string fn, double pos = 0)
         {
             Console.WriteLine(fn);
@@ -190,10 +197,6 @@ namespace AlfaPlayer2
             }
             catch { }
         }
-        private float maxVolume = 0.5f;
-
-        private DateTime lastSeekForward;
-
         private void SeekForward()
         {
             if (reader != null)
@@ -208,9 +211,6 @@ namespace AlfaPlayer2
             }
             lastSeekForward = DateTime.Now;
         }
-
-        private DateTime lastSeekBackward;
-
         private void SeekBackward()
         {
             if (reader != null)
@@ -238,13 +238,7 @@ namespace AlfaPlayer2
                 catch (Exception) { }
             }
         }
-
-        private string lastFolder = @"F:\DATA\MUSIC\www.s-a-f.ro\music\";
-        private string lastFile = @"F:\DATA\MUSIC\www.s-a-f.ro\music\07-the_smoke-upm.mp3";
-        private double lastFilePos = 0;
-
-
-        void SaveSettings()
+        private void SaveSettings()
         {
             Console.WriteLine("SAVING");
             Properties.Settings.Default.LastFile = lastFile;
@@ -266,8 +260,8 @@ namespace AlfaPlayer2
             OpenFile(lastFile, lastFilePos);
             SeekToSecond(lastFilePos);
             listBoxFilePanel.Select();
+            timerPlayer.Enabled = true;
         }
-
 
         private void InitFilePanel()
         {
@@ -321,6 +315,192 @@ namespace AlfaPlayer2
             }
 
             groupBox1.Text = folder;
+        }
+
+        private void listBoxFilePanel_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.KeyCode == Keys.Return)
+            {
+                var sel = listBoxFilePanel.SelectedItem.ToString();
+                if (sel.StartsWith(":"))
+                {
+                    ChangeFolder(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + sel.Substring(1));
+                }
+                else
+                {
+                    OpenFile(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + listBoxFilePanel.SelectedItem.ToString());
+                }
+            }
+            else if (e.KeyCode == Keys.Right || e.KeyCode == Keys.Left/* || e.KeyCode == Keys.PageUp || e.KeyCode == Keys.PageDown*/)
+            {
+                e.SuppressKeyPress = true;
+            }
+            else if (e.KeyCode == Keys.F1)
+            {
+                new AboutBox().ShowDialog(this);
+            }
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            //Console.WriteLine(e.KeyCode);
+            switch (e.KeyCode)
+            {
+                case Keys.Left:
+                    SeekBackward();
+                    break;
+
+                case Keys.Right:
+                    SeekForward();
+                    break;
+
+                case Keys.MediaNextTrack:
+                    PlayNext();
+                    break;
+
+                case Keys.MediaPreviousTrack:
+                    PlayPrev();
+                    break;
+
+                case Keys.MediaStop:
+                    Stop();
+                    break;
+
+                case Keys.MediaPlayPause:
+                    PlayPause();
+                    break;
+
+                case Keys.BrowserBack:
+                    ChangeFolder(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + "..");
+                    break;
+            }
+        }
+
+
+        private void Stop()
+        {
+            if (reader != null)
+            {
+                try
+                {
+                    switch (waveOut.PlaybackState)
+                    {
+                        case PlaybackState.Playing:
+                            waveOut.Stop();
+                            break;
+
+                        case PlaybackState.Paused:
+                            waveOut.Stop();
+                            break;
+                    }
+                }
+                catch (Exception) { }
+            }
+        }
+
+        private void PlayPause()
+        {
+            if (reader != null)
+            {
+                try
+                {
+                    switch (waveOut.PlaybackState)
+                    {
+                        case PlaybackState.Playing:
+                            waveOut.Pause();
+                            break;
+
+                        case PlaybackState.Paused:
+                            waveOut.Play();
+                            break;
+
+                        case PlaybackState.Stopped:
+                            waveOut.Play();
+                            break;
+                    }
+                }
+                catch (Exception) { }
+            }
+        }
+
+        private void textProgressBar_MouseClick(object sender, MouseEventArgs e)
+        {
+            float pos = ((float)e.X / (textProgressBar.Width - textProgressBar.Padding.Left - textProgressBar.Padding.Right)).Clamp(0, 0.999f);
+
+            Console.WriteLine(pos);
+
+            if (reader != null && reader.CanSeek)
+            {
+                try
+                {
+                    reader.Seek((long)(pos * reader.Length), System.IO.SeekOrigin.Begin);
+                }
+                catch (Exception) { }
+            }
+        }
+
+        private void timerPlayer_Tick(object sender, EventArgs e)
+        {
+            if (reader != null)
+            {
+                //Console.WriteLine(reader.Position);
+
+                textProgressBar.Value = (int)(textProgressBar.MaximumValue * reader.Position / reader.Length);
+                lastFilePos = reader.CurrentTime.TotalSeconds;
+
+                var ct = reader.CurrentTime.TotalSeconds;
+                var tt = reader.TotalTime.TotalSeconds;
+
+                textProgressBar.ProgressText = string.Format("{0:00}:{1:00} / {2:00}:{3:00}", (int)ct / 60, ct % 60, (int)tt / 60, tt % 60);
+                if (tag != null)
+                {
+                    if (!string.IsNullOrEmpty(tag.Tag.Title))
+                    {
+                        string tit = "";
+                        if (tag.Tag.AlbumArtists.Length > 0)
+                        {
+                            tit = string.Format("{1} ({0})", tag.Tag.AlbumArtists[0], tag.Tag.Title);
+                        }
+                        else
+                        {
+                            tit = tag.Tag.Title;
+                        }
+                        labelSongTitle.Tag = tit;
+                    }
+                    else
+                    {
+                        labelSongTitle.Tag = string.Format("{0}", Path.GetFileName(tag.Name));
+                    }
+                }
+                //Console.WriteLine(">>> {0}", reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds);
+                if (reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds < 300)
+                {
+                    Console.WriteLine("Next");
+                    PlayNext();
+                }
+            }
+
+            if (labelSongTitle.Tag != null)
+            {
+                string t = labelSongTitle.Tag.ToString();
+                t = t + " * " + t + " * " + t;
+                if (scrollPos > t.Length)
+                {
+                    scrollPos = 0;
+                }
+
+                labelSongTitle.Text = t.Substring(scrollPos) + " * " + t.Substring(0, scrollPos);
+
+                scrollPos = (scrollPos + 1) % t.Length;
+            }
+
+            if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
+            {
+                //SystemInformation.PowerStatus.BatteryLifePercent
+                labelBatteryInfo.BackColor = Properties.Settings.Default.OnBatteryColor;
+            }
+            labelBatteryInfo.Text = string.Format("{0:00}", 100*SystemInformation.PowerStatus.BatteryLifePercent);
         }
     }
 }

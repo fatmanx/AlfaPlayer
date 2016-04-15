@@ -1,4 +1,4 @@
-﻿namespace AlfaPlayer
+﻿namespace AlfaPlayer2
 {
     partial class AboutBox
     {
