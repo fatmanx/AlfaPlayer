@@ -90,6 +90,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScrollLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ScrollLabel.Designer.cs">
+      <DependentUpon>ScrollLabel.cs</DependentUpon>
+    </Compile>
     <Compile Include="TextProgressBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -112,6 +118,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ScrollLabel.resx">
+      <DependentUpon>ScrollLabel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TextProgressBar.resx">
       <DependentUpon>TextProgressBar.cs</DependentUpon>
     </EmbeddedResource>

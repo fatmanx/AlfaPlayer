@@ -29,36 +29,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.labelSongTitle = new System.Windows.Forms.Label();
             this.labelBatteryInfo = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.timerPlayer = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.timerMarquee = new System.Windows.Forms.Timer(this.components);
             this.listBoxFilePanel = new AlfaPlayer.CListBox();
+            this.labelSongTitle = new AlfaPlayer2.ScrollLabel();
             this.textProgressBar = new AlfaPlayer.TextProgressBar();
             this.textProgressBar2 = new AlfaPlayer.TextProgressBar();
             this.textProgressBar1 = new AlfaPlayer.TextProgressBar();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // labelSongTitle
-            // 
-            this.labelSongTitle.BackColor = global::AlfaPlayer2.Properties.Settings.Default.TitleBackColor;
-            this.labelSongTitle.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "TitleTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.labelSongTitle.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "TitleBackColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.labelSongTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelSongTitle.Font = new System.Drawing.Font("White Rabbit", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSongTitle.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.TitleTextColor;
-            this.labelSongTitle.Location = new System.Drawing.Point(4, 73);
-            this.labelSongTitle.Name = "labelSongTitle";
-            this.labelSongTitle.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.labelSongTitle.Size = new System.Drawing.Size(672, 49);
-            this.labelSongTitle.TabIndex = 4;
-            this.labelSongTitle.Text = "Alfa Player AlfaPlaxasxasx";
-            this.labelSongTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelSongTitle.UseCompatibleTextRendering = true;
             // 
             // labelBatteryInfo
             // 
@@ -96,9 +79,9 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 84.98583F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.01416F));
+            this.tableLayoutPanel1.Controls.Add(this.labelSongTitle, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.textProgressBar, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.labelSongTitle, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.labelBatteryInfo, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -140,6 +123,23 @@
             this.listBoxFilePanel.TabIndex = 1;
             this.listBoxFilePanel.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxFilePanel_DrawItem);
             this.listBoxFilePanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxFilePanel_KeyDown);
+            // 
+            // labelSongTitle
+            // 
+            this.labelSongTitle.BackColor = global::AlfaPlayer2.Properties.Settings.Default.TitleBackColor;
+            this.labelSongTitle.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "TitleTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.labelSongTitle.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "TitleBackColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.labelSongTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelSongTitle.Font = new System.Drawing.Font("White Rabbit", 36F);
+            this.labelSongTitle.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.TitleTextColor;
+            this.labelSongTitle.Location = new System.Drawing.Point(4, 73);
+            this.labelSongTitle.Name = "labelSongTitle";
+            this.labelSongTitle.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.labelSongTitle.Size = new System.Drawing.Size(672, 49);
+            this.labelSongTitle.Step = 1F;
+            this.labelSongTitle.TabIndex = 2;
+            this.labelSongTitle.Text = "Alfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa Player";
+            this.labelSongTitle.TimeoutSeconds = 0.049999999999999996D;
             // 
             // textProgressBar
             // 
@@ -223,12 +223,12 @@
         private AlfaPlayer.CListBox listBoxFilePanel;
         private AlfaPlayer.TextProgressBar textProgressBar2;
         private AlfaPlayer.TextProgressBar textProgressBar;
-        private System.Windows.Forms.Label labelSongTitle;
         private System.Windows.Forms.Label labelBatteryInfo;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Timer timerPlayer;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Timer timerMarquee;
+        private ScrollLabel labelSongTitle;
     }
 }
 

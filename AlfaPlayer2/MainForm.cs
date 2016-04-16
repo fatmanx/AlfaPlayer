@@ -456,9 +456,10 @@ namespace AlfaPlayer2
                 textProgressBar.ProgressText = string.Format("{0:00}:{1:00} / {2:00}:{3:00}", (int)ct / 60, ct % 60, (int)tt / 60, tt % 60);
                 if (tag != null)
                 {
+                    string tit = "";
                     if (!string.IsNullOrEmpty(tag.Tag.Title))
                     {
-                        string tit = "";
+
                         if (tag.Tag.AlbumArtists.Length > 0)
                         {
                             tit = string.Format("{1} ({0})", tag.Tag.AlbumArtists[0], tag.Tag.Title);
@@ -467,16 +468,21 @@ namespace AlfaPlayer2
                         {
                             tit = tag.Tag.Title;
                         }
-                        labelSongTitle.Tag = tit;
+
                     }
                     else
                     {
-                        labelSongTitle.Tag = string.Format("{0}", Path.GetFileName(tag.Name));
+                        tit = string.Format("{0}", Path.GetFileName(tag.Name));
                     }
-                    marqueeSB = new StringBuilder(" * " + labelSongTitle.Tag.ToString());
-                    
-                    
-                    marqueeSB.Append(marqueeSB.ToString() + marqueeSB.ToString() + marqueeSB.ToString());
+
+                    if (labelSongTitle.Text != tit)
+                    {
+                        labelSongTitle.Text = tit;
+                    }
+                    //marqueeSB = new StringBuilder(" * " + labelSongTitle.Tag.ToString());
+
+
+                    //marqueeSB.Append(marqueeSB.ToString() + marqueeSB.ToString() + marqueeSB.ToString());
 
 
                 }
@@ -502,27 +508,27 @@ namespace AlfaPlayer2
         StringBuilder marqueeSB = new StringBuilder();
         private void timerMarquee_Tick(object sender, EventArgs e)
         {
-            if (labelSongTitle.Tag != null)
-            {
-                //string t = labelSongTitle.Tag.ToString();
-                var tl = labelSongTitle.Tag.ToString().Length;
-                //t = t + " * " + t + " * " + t + " * " + t + " * " + t + " * " + t;
-                //if (scrollPos > tl)
-                //{
-                //    scrollPos = 0;
-                //}
-                //labelSongTitle.Text = t.Substring(scrollPos);
-                labelSongTitle.Text = marqueeSB.ToString(scrollPos, marqueeSB.Length-scrollPos);
+            //if (labelSongTitle.Tag != null)
+            //{
+            //    //string t = labelSongTitle.Tag.ToString();
+            //    var tl = labelSongTitle.Tag.ToString().Length;
+            //    //t = t + " * " + t + " * " + t + " * " + t + " * " + t + " * " + t;
+            //    //if (scrollPos > tl)
+            //    //{
+            //    //    scrollPos = 0;
+            //    //}
+            //    //labelSongTitle.Text = t.Substring(scrollPos);
+            //    labelSongTitle.Text = marqueeSB.ToString(scrollPos, marqueeSB.Length-scrollPos);
 
-                if (scrollPos > tl+3)
-                {
-                    scrollPos = 0;
-                }
+            //    if (scrollPos > tl+3)
+            //    {
+            //        scrollPos = 0;
+            //    }
 
-                    
 
-                scrollPos = (scrollPos + 1) % tl;
-            }
+
+            //    scrollPos = (scrollPos + 1) % tl;
+            //}
 
         }
     }
