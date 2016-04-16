@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             this.labelBatteryInfo = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.listBoxFilePanel = new AlfaPlayer.CListBox();
             this.timerPlayer = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.listBoxFilePanel = new AlfaPlayer.CListBox();
             this.labelSongTitle = new AlfaPlayer2.ScrollLabel();
             this.textProgressBar = new AlfaPlayer.TextProgressBar();
             this.textProgressBar2 = new AlfaPlayer.TextProgressBar();
@@ -68,32 +68,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alfa Player";
             // 
-            // listBoxFilePanel
-            // 
-            this.listBoxFilePanel.BackColor = global::AlfaPlayer2.Properties.Settings.Default.BackgroundColor;
-            this.listBoxFilePanel.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "BackgroundColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "FilePanelTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItemBackColor", global::AlfaPlayer2.Properties.Settings.Default, "SelectedItemBackColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItemForeColor", global::AlfaPlayer2.Properties.Settings.Default, "SelectedItemForeColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("SelectedSpecialItemForeColor", global::AlfaPlayer2.Properties.Settings.Default, "SelectedSpecialItemForeColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.listBoxFilePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxFilePanel.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.listBoxFilePanel.Font = new System.Drawing.Font("White Rabbit", 26F);
-            this.listBoxFilePanel.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelTextColor;
-            this.listBoxFilePanel.FormattingEnabled = true;
-            this.listBoxFilePanel.ItemHeight = 67;
-            this.listBoxFilePanel.Location = new System.Drawing.Point(3, 34);
-            this.listBoxFilePanel.Name = "listBoxFilePanel";
-            this.listBoxFilePanel.SelectedItemBackColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedItemBackColor;
-            this.listBoxFilePanel.SelectedItemForeColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedItemForeColor;
-            this.listBoxFilePanel.SelectedSpecialItemForeColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedSpecialItemForeColor;
-            this.listBoxFilePanel.ShowScrollbar = false;
-            this.listBoxFilePanel.Size = new System.Drawing.Size(788, 337);
-            this.listBoxFilePanel.TabIndex = 1;
-            this.listBoxFilePanel.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxFilePanel_DrawItem);
-            this.listBoxFilePanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxFilePanel_KeyDown);
-            // 
             // timerPlayer
             // 
             this.timerPlayer.Tick += new System.EventHandler(this.timerPlayer_Tick);
@@ -117,6 +91,36 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 480);
             this.tableLayoutPanel1.TabIndex = 7;
+            // 
+            // listBoxFilePanel
+            // 
+            this.listBoxFilePanel.BackColor = global::AlfaPlayer2.Properties.Settings.Default.BackgroundColor;
+            this.listBoxFilePanel.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "BackgroundColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "FilePanelTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItemBackColor", global::AlfaPlayer2.Properties.Settings.Default, "SelectedItemBackColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItemForeColor", global::AlfaPlayer2.Properties.Settings.Default, "SelectedItemForeColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("SelectedSpecialItemForeColor", global::AlfaPlayer2.Properties.Settings.Default, "SelectedSpecialItemForeColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.listBoxFilePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxFilePanel.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.listBoxFilePanel.Font = new System.Drawing.Font("White Rabbit", 26F);
+            this.listBoxFilePanel.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelTextColor;
+            this.listBoxFilePanel.FormattingEnabled = true;
+            this.listBoxFilePanel.ItemHeight = 57;
+            this.listBoxFilePanel.Items.AddRange(new object[] {
+            "..",
+            "dir1",
+            "music1.mp3"});
+            this.listBoxFilePanel.Location = new System.Drawing.Point(3, 34);
+            this.listBoxFilePanel.Name = "listBoxFilePanel";
+            this.listBoxFilePanel.SelectedItemBackColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedItemBackColor;
+            this.listBoxFilePanel.SelectedItemForeColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedItemForeColor;
+            this.listBoxFilePanel.SelectedSpecialItemForeColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedSpecialItemForeColor;
+            this.listBoxFilePanel.ShowScrollbar = false;
+            this.listBoxFilePanel.Size = new System.Drawing.Size(788, 337);
+            this.listBoxFilePanel.TabIndex = 1;
+            this.listBoxFilePanel.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxFilePanel_DrawItem);
+            this.listBoxFilePanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxFilePanel_KeyDown);
             // 
             // labelSongTitle
             // 

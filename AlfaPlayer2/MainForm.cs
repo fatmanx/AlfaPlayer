@@ -490,9 +490,10 @@ namespace AlfaPlayer2
 
                 }
                 //Console.WriteLine(">>> {0}", reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds);
-                if (reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds < 300)
+                if (waveOut.PlaybackState==PlaybackState.Playing && reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds < 300)
                 {
                     Console.WriteLine("Next");
+                    
                     PlayNext();
                 }
             }
