@@ -33,7 +33,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.timerPlayer = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.timerMarquee = new System.Windows.Forms.Timer(this.components);
             this.listBoxFilePanel = new AlfaPlayer.CListBox();
             this.labelSongTitle = new AlfaPlayer2.ScrollLabel();
             this.textProgressBar = new AlfaPlayer.TextProgressBar();
@@ -53,7 +52,7 @@
             this.labelBatteryInfo.Name = "labelBatteryInfo";
             this.labelBatteryInfo.Size = new System.Drawing.Size(114, 49);
             this.labelBatteryInfo.TabIndex = 5;
-            this.labelBatteryInfo.Text = "100";
+            this.labelBatteryInfo.Text = "50";
             this.labelBatteryInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBox1
@@ -68,7 +67,7 @@
             this.groupBox1.Size = new System.Drawing.Size(792, 471);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            this.groupBox1.Text = "Alfa Player";
             // 
             // timerPlayer
             // 
@@ -93,11 +92,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 477F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 600);
             this.tableLayoutPanel1.TabIndex = 7;
-            // 
-            // timerMarquee
-            // 
-            this.timerMarquee.Interval = 200;
-            this.timerMarquee.Tick += new System.EventHandler(this.timerMarquee_Tick);
             // 
             // listBoxFilePanel
             // 
@@ -138,7 +132,8 @@
             this.labelSongTitle.Size = new System.Drawing.Size(672, 49);
             this.labelSongTitle.Step = 1F;
             this.labelSongTitle.TabIndex = 2;
-            this.labelSongTitle.Text = "Alfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa Player";
+            this.labelSongTitle.Text = "Alfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa" +
+    " PlayerAlfa PlayerAlfa PlayerAlfa Player";
             this.labelSongTitle.TimeoutSeconds = 0.049999999999999996D;
             // 
             // textProgressBar
@@ -156,7 +151,7 @@
             this.textProgressBar.Size = new System.Drawing.Size(776, 58);
             this.textProgressBar.TabIndex = 3;
             this.textProgressBar.TextColor = global::AlfaPlayer2.Properties.Settings.Default.ProgressTextColor;
-            this.textProgressBar.Value = 44;
+            this.textProgressBar.Value = 50;
             this.textProgressBar.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textProgressBar_MouseClick);
             // 
             // textProgressBar2
@@ -227,7 +222,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Timer timerPlayer;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Timer timerMarquee;
         private ScrollLabel labelSongTitle;
     }
 }

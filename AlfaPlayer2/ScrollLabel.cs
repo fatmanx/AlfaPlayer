@@ -29,7 +29,7 @@ namespace AlfaPlayer2
 
 
         string text = "";
-        float sw = 0;
+        
         float y = 0;
         public override string Text
         {
@@ -45,11 +45,10 @@ namespace AlfaPlayer2
                 //Console.WriteLine(base.Text);
                 //base.Text = "Alfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa PlayerAlfa Player";
                 var s = CreateGraphics().MeasureString(base.Text, Font);
-                var s2 = CreateGraphics().MeasureString(base.Text + " * ", Font);
+                
                 //Console.WriteLine("{0}  {1}", Width, s);
                 if (s.Width > 0)
                 {
-                    sw = s2.Width;
                     text = base.Text + " * ";
 
                     int xx = (int)(Width / s.Width);

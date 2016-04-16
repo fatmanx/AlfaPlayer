@@ -188,7 +188,6 @@ namespace AlfaPlayer2
                 Console.WriteLine("reader.BlockAlign {0}", reader.BlockAlign);
                 if (ft != FileType.None)
                 {
-                    scrollPos = 0;
                     waveOut = new WaveOut(); // or WaveOutEvent()
                     waveOut.Init(reader);
                     waveOut.Play();
@@ -261,7 +260,7 @@ namespace AlfaPlayer2
             SeekToSecond(lastFilePos);
             listBoxFilePanel.Select();
             timerPlayer.Enabled = true;
-            timerMarquee.Enabled = true;
+
         }
 
         private void InitFilePanel()
@@ -479,10 +478,6 @@ namespace AlfaPlayer2
                     {
                         labelSongTitle.Text = tit;
                     }
-                    //marqueeSB = new StringBuilder(" * " + labelSongTitle.Tag.ToString());
-
-
-                    //marqueeSB.Append(marqueeSB.ToString() + marqueeSB.ToString() + marqueeSB.ToString());
 
 
                 }
@@ -504,32 +499,5 @@ namespace AlfaPlayer2
 
         }
 
-        private int scrollPos = 0;
-        StringBuilder marqueeSB = new StringBuilder();
-        private void timerMarquee_Tick(object sender, EventArgs e)
-        {
-            //if (labelSongTitle.Tag != null)
-            //{
-            //    //string t = labelSongTitle.Tag.ToString();
-            //    var tl = labelSongTitle.Tag.ToString().Length;
-            //    //t = t + " * " + t + " * " + t + " * " + t + " * " + t + " * " + t;
-            //    //if (scrollPos > tl)
-            //    //{
-            //    //    scrollPos = 0;
-            //    //}
-            //    //labelSongTitle.Text = t.Substring(scrollPos);
-            //    labelSongTitle.Text = marqueeSB.ToString(scrollPos, marqueeSB.Length-scrollPos);
-
-            //    if (scrollPos > tl+3)
-            //    {
-            //        scrollPos = 0;
-            //    }
-
-
-
-            //    scrollPos = (scrollPos + 1) % tl;
-            //}
-
-        }
     }
 }
