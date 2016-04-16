@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AlfaPlayer.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AlfaPlayer2.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="FolderTextColor" Type="System.Drawing.Color" Scope="User">
@@ -52,6 +52,9 @@
     </Setting>
     <Setting Name="OnBatteryColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Red</Value>
+    </Setting>
+    <Setting Name="OnACColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">41, 46, 79</Value>
     </Setting>
   </Settings>
 </SettingsFile>

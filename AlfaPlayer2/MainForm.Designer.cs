@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             this.labelBatteryInfo = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.listBoxFilePanel = new AlfaPlayer.CListBox();
             this.timerPlayer = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.listBoxFilePanel = new AlfaPlayer.CListBox();
             this.labelSongTitle = new AlfaPlayer2.ScrollLabel();
             this.textProgressBar = new AlfaPlayer.TextProgressBar();
             this.textProgressBar2 = new AlfaPlayer.TextProgressBar();
@@ -45,8 +45,7 @@
             // labelBatteryInfo
             // 
             this.labelBatteryInfo.AutoSize = true;
-            this.labelBatteryInfo.BackColor = global::AlfaPlayer2.Properties.Settings.Default.OnBatteryColor;
-            this.labelBatteryInfo.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "OnBatteryColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.labelBatteryInfo.BackColor = System.Drawing.Color.Transparent;
             this.labelBatteryInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelBatteryInfo.Location = new System.Drawing.Point(682, 73);
             this.labelBatteryInfo.Name = "labelBatteryInfo";
@@ -68,30 +67,6 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alfa Player";
-            // 
-            // timerPlayer
-            // 
-            this.timerPlayer.Tick += new System.EventHandler(this.timerPlayer_Tick);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 84.98583F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.01416F));
-            this.tableLayoutPanel1.Controls.Add(this.labelSongTitle, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.textProgressBar, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.labelBatteryInfo, 1, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(1);
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 72F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 477F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 600);
-            this.tableLayoutPanel1.TabIndex = 7;
             // 
             // listBoxFilePanel
             // 
@@ -117,6 +92,30 @@
             this.listBoxFilePanel.TabIndex = 1;
             this.listBoxFilePanel.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxFilePanel_DrawItem);
             this.listBoxFilePanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxFilePanel_KeyDown);
+            // 
+            // timerPlayer
+            // 
+            this.timerPlayer.Tick += new System.EventHandler(this.timerPlayer_Tick);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 84.98583F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.01416F));
+            this.tableLayoutPanel1.Controls.Add(this.labelSongTitle, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.textProgressBar, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.labelBatteryInfo, 1, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(1);
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 72F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 477F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 600);
+            this.tableLayoutPanel1.TabIndex = 7;
             // 
             // labelSongTitle
             // 
@@ -203,6 +202,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.groupBox1.ResumeLayout(false);

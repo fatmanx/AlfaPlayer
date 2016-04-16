@@ -247,7 +247,7 @@ namespace AlfaPlayer2
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            labelBatteryInfo.BackColor = Properties.Settings.Default.BackgroundColor;
+            labelBatteryInfo.BackColor = Properties.Settings.Default.OnACColor;
             //Properties.Settings.Default.Upgrade();
             lastFolder = Properties.Settings.Default.LastFolder;
             lastFile = Properties.Settings.Default.LastFile;
@@ -306,7 +306,7 @@ namespace AlfaPlayer2
         private void SetFolderLabel(string folder)
         {
             groupBox1.Tag = folder;
-            int max = 30;
+            int max = 25;
             if (folder.Length > max)
             {
                 int dif = folder.Length - max;
@@ -492,12 +492,19 @@ namespace AlfaPlayer2
 
             if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
             {
-                //SystemInformation.PowerStatus.BatteryLifePercent
                 labelBatteryInfo.BackColor = Properties.Settings.Default.OnBatteryColor;
+            }
+            else
+            {
+                labelBatteryInfo.BackColor = Properties.Settings.Default.OnACColor;
             }
             labelBatteryInfo.Text = string.Format("{0:00}", 100 * SystemInformation.PowerStatus.BatteryLifePercent);
 
         }
 
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveSettings();
+        }
     }
 }

@@ -226,5 +226,17 @@ namespace AlfaPlayer2.Properties {
                 this["OnBatteryColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("41, 46, 79")]
+        public global::System.Drawing.Color OnACColor {
+            get {
+                return ((global::System.Drawing.Color)(this["OnACColor"]));
+            }
+            set {
+                this["OnACColor"] = value;
+            }
+        }
     }
 }
