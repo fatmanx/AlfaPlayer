@@ -247,17 +247,25 @@ namespace AlfaPlayer2
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (Screen.PrimaryScreen.WorkingArea.Height < 1024)
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
+
             labelBatteryInfo.BackColor = Properties.Settings.Default.OnACColor;
-            //Properties.Settings.Default.Upgrade();
+            Properties.Settings.Default.Upgrade();
             lastFolder = Properties.Settings.Default.LastFolder;
             lastFile = Properties.Settings.Default.LastFile;
             lastFilePos = Properties.Settings.Default.LastFilePos;
             maxVolume = Properties.Settings.Default.MaxVolume;
 
             InitFilePanel();
-            ChangeFolder(Path.GetDirectoryName(lastFile));
-            OpenFile(lastFile, lastFilePos);
-            SeekToSecond(lastFilePos);
+            if (File.Exists(lastFile))
+            {
+                ChangeFolder(Path.GetDirectoryName(lastFile));
+                OpenFile(lastFile, lastFilePos);
+                SeekToSecond(lastFilePos);
+            }
             listBoxFilePanel.Select();
             timerPlayer.Enabled = true;
 

@@ -48,7 +48,7 @@
             this.logoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("logoPictureBox.Image")));
             this.logoPictureBox.Location = new System.Drawing.Point(2, 2);
             this.logoPictureBox.Name = "logoPictureBox";
-            this.logoPictureBox.Size = new System.Drawing.Size(252, 556);
+            this.logoPictureBox.Size = new System.Drawing.Size(252, 446);
             this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.logoPictureBox.TabIndex = 12;
             this.logoPictureBox.TabStop = false;
@@ -123,7 +123,7 @@
             this.textBoxDescription.Multiline = true;
             this.textBoxDescription.Name = "textBoxDescription";
             this.textBoxDescription.ReadOnly = true;
-            this.textBoxDescription.Size = new System.Drawing.Size(498, 314);
+            this.textBoxDescription.Size = new System.Drawing.Size(498, 204);
             this.textBoxDescription.TabIndex = 23;
             this.textBoxDescription.TabStop = false;
             this.textBoxDescription.Text = "Description";
@@ -137,7 +137,7 @@
             this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.okButton.Font = new System.Drawing.Font("White Rabbit", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.okButton.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelTextColor;
-            this.okButton.Location = new System.Drawing.Point(2, 508);
+            this.okButton.Location = new System.Drawing.Point(2, 398);
             this.okButton.Name = "okButton";
             this.okButton.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
             this.okButton.Size = new System.Drawing.Size(498, 50);
@@ -152,7 +152,7 @@
             this.panel1.Location = new System.Drawing.Point(9, 9);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(2);
-            this.panel1.Size = new System.Drawing.Size(258, 562);
+            this.panel1.Size = new System.Drawing.Size(258, 452);
             this.panel1.TabIndex = 25;
             // 
             // panel2
@@ -168,16 +168,16 @@
             this.panel2.Location = new System.Drawing.Point(267, 9);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(2);
-            this.panel2.Size = new System.Drawing.Size(504, 562);
+            this.panel2.Size = new System.Drawing.Size(504, 452);
             this.panel2.TabIndex = 26;
             // 
-            // AboutBox1
+            // AboutBox
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = global::AlfaPlayer2.Properties.Settings.Default.AboutBoxBackColor;
-            this.ClientSize = new System.Drawing.Size(780, 580);
+            this.ClientSize = new System.Drawing.Size(780, 470);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "AboutBoxBackColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
@@ -185,7 +185,7 @@
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AboutBox1";
+            this.Name = "AboutBox";
             this.Padding = new System.Windows.Forms.Padding(9);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

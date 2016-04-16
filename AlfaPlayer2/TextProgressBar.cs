@@ -14,7 +14,7 @@ namespace AlfaPlayer
         public TextProgressBar()
         {
             InitializeComponent();
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
         }
 
 
