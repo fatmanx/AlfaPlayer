@@ -32,38 +32,40 @@
             this.labelBatteryInfo = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.timerPlayer = new System.Windows.Forms.Timer(this.components);
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.listBoxFilePanel = new AlfaPlayer.CListBox();
             this.labelSongTitle = new AlfaPlayer2.ScrollLabel();
             this.textProgressBar = new AlfaPlayer.TextProgressBar();
             this.textProgressBar2 = new AlfaPlayer.TextProgressBar();
             this.textProgressBar1 = new AlfaPlayer.TextProgressBar();
             this.groupBox1.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelBatteryInfo
             // 
-            this.labelBatteryInfo.AutoSize = true;
             this.labelBatteryInfo.BackColor = System.Drawing.Color.Transparent;
-            this.labelBatteryInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelBatteryInfo.Location = new System.Drawing.Point(682, 50);
+            this.labelBatteryInfo.Dock = System.Windows.Forms.DockStyle.Right;
+            this.labelBatteryInfo.Location = new System.Drawing.Point(702, 1);
             this.labelBatteryInfo.Name = "labelBatteryInfo";
-            this.labelBatteryInfo.Size = new System.Drawing.Size(115, 50);
+            this.labelBatteryInfo.Size = new System.Drawing.Size(97, 59);
             this.labelBatteryInfo.TabIndex = 5;
-            this.labelBatteryInfo.Text = "50";
+            this.labelBatteryInfo.Text = "100";
             this.labelBatteryInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBox1
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.groupBox1, 2);
             this.groupBox1.Controls.Add(this.listBoxFilePanel);
             this.groupBox1.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "FilePanelFolderTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelFolderTextColor;
-            this.groupBox1.Location = new System.Drawing.Point(3, 103);
+            this.groupBox1.Location = new System.Drawing.Point(1, 1);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(794, 374);
+            this.groupBox1.Size = new System.Drawing.Size(798, 370);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alfa Player";
@@ -72,25 +74,36 @@
             // 
             this.timerPlayer.Tick += new System.EventHandler(this.timerPlayer_Tick);
             // 
-            // tableLayoutPanel1
+            // panel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 84.98584F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.01416F));
-            this.tableLayoutPanel1.Controls.Add(this.labelSongTitle, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.textProgressBar, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.labelBatteryInfo, 1, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 480);
-            this.tableLayoutPanel1.TabIndex = 7;
+            this.panel1.Controls.Add(this.textProgressBar);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(1);
+            this.panel1.Size = new System.Drawing.Size(800, 47);
+            this.panel1.TabIndex = 7;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.labelSongTitle);
+            this.panel2.Controls.Add(this.labelBatteryInfo);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 47);
+            this.panel2.Name = "panel2";
+            this.panel2.Padding = new System.Windows.Forms.Padding(1);
+            this.panel2.Size = new System.Drawing.Size(800, 61);
+            this.panel2.TabIndex = 8;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.groupBox1);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(0, 108);
+            this.panel3.Name = "panel3";
+            this.panel3.Padding = new System.Windows.Forms.Padding(1);
+            this.panel3.Size = new System.Drawing.Size(800, 372);
+            this.panel3.TabIndex = 9;
             // 
             // listBoxFilePanel
             // 
@@ -103,7 +116,7 @@
             this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("SelectedSpecialItemForeColor", global::AlfaPlayer2.Properties.Settings.Default, "SelectedSpecialItemForeColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.listBoxFilePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxFilePanel.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.listBoxFilePanel.Font = new System.Drawing.Font("White Rabbit", 26F);
+            this.listBoxFilePanel.Font = new System.Drawing.Font("White Rabbit", 27F);
             this.listBoxFilePanel.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelTextColor;
             this.listBoxFilePanel.FormattingEnabled = true;
             this.listBoxFilePanel.ItemHeight = 57;
@@ -117,7 +130,7 @@
             this.listBoxFilePanel.SelectedItemForeColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedItemForeColor;
             this.listBoxFilePanel.SelectedSpecialItemForeColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedSpecialItemForeColor;
             this.listBoxFilePanel.ShowScrollbar = false;
-            this.listBoxFilePanel.Size = new System.Drawing.Size(788, 337);
+            this.listBoxFilePanel.Size = new System.Drawing.Size(792, 333);
             this.listBoxFilePanel.TabIndex = 1;
             this.listBoxFilePanel.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxFilePanel_DrawItem);
             this.listBoxFilePanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxFilePanel_KeyDown);
@@ -130,28 +143,27 @@
             this.labelSongTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelSongTitle.Font = new System.Drawing.Font("White Rabbit", 36F);
             this.labelSongTitle.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.TitleTextColor;
-            this.labelSongTitle.Location = new System.Drawing.Point(3, 50);
+            this.labelSongTitle.Location = new System.Drawing.Point(1, 1);
             this.labelSongTitle.Name = "labelSongTitle";
             this.labelSongTitle.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.labelSongTitle.Size = new System.Drawing.Size(673, 50);
+            this.labelSongTitle.Size = new System.Drawing.Size(701, 59);
             this.labelSongTitle.Step = 1F;
             this.labelSongTitle.TabIndex = 2;
             this.labelSongTitle.Text = "Alfa Player";
-            this.labelSongTitle.TimeoutSeconds = 0.049999999999999996D;
+            this.labelSongTitle.TimeoutSeconds = 0.01D;
             // 
             // textProgressBar
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.textProgressBar, 2);
             this.textProgressBar.DataBindings.Add(new System.Windows.Forms.Binding("TextColor", global::AlfaPlayer2.Properties.Settings.Default, "ProgressTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textProgressBar.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "ProgressForeColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textProgressBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textProgressBar.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.ProgressForeColor;
-            this.textProgressBar.Location = new System.Drawing.Point(2, 2);
-            this.textProgressBar.Margin = new System.Windows.Forms.Padding(2);
+            this.textProgressBar.Location = new System.Drawing.Point(1, 1);
+            this.textProgressBar.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.textProgressBar.MaximumValue = 100;
             this.textProgressBar.Name = "textProgressBar";
             this.textProgressBar.ProgressText = "00:00 / 00:00";
-            this.textProgressBar.Size = new System.Drawing.Size(796, 46);
+            this.textProgressBar.Size = new System.Drawing.Size(798, 45);
             this.textProgressBar.TabIndex = 3;
             this.textProgressBar.TextColor = global::AlfaPlayer2.Properties.Settings.Default.ProgressTextColor;
             this.textProgressBar.Value = 50;
@@ -193,7 +205,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = global::AlfaPlayer2.Properties.Settings.Default.BackgroundColor;
             this.ClientSize = new System.Drawing.Size(800, 480);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.textProgressBar2);
             this.Controls.Add(this.textProgressBar1);
             this.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "BackgroundColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
@@ -211,8 +225,9 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.groupBox1.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -226,8 +241,10 @@
         private System.Windows.Forms.Label labelBatteryInfo;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Timer timerPlayer;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private ScrollLabel labelSongTitle;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
     }
 }
 
