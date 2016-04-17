@@ -253,7 +253,8 @@ namespace AlfaPlayer2
             }
 
             labelBatteryInfo.BackColor = Properties.Settings.Default.OnACColor;
-            Properties.Settings.Default.Upgrade();
+            //Properties.Settings.Default.Upgrade();
+            Util.DoUpgrade(Properties.Settings.Default);
             lastFolder = Properties.Settings.Default.LastFolder;
             lastFile = Properties.Settings.Default.LastFile;
             lastFilePos = Properties.Settings.Default.LastFilePos;

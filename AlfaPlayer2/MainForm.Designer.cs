@@ -48,11 +48,11 @@
             // 
             // labelBatteryInfo
             // 
-            this.labelBatteryInfo.BackColor = System.Drawing.Color.Transparent;
+            this.labelBatteryInfo.BackColor = global::AlfaPlayer2.Properties.Settings.Default.OnACColor;
             this.labelBatteryInfo.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelBatteryInfo.Location = new System.Drawing.Point(702, 1);
             this.labelBatteryInfo.Name = "labelBatteryInfo";
-            this.labelBatteryInfo.Size = new System.Drawing.Size(97, 59);
+            this.labelBatteryInfo.Size = new System.Drawing.Size(97, 58);
             this.labelBatteryInfo.TabIndex = 5;
             this.labelBatteryInfo.Text = "100";
             this.labelBatteryInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -62,10 +62,11 @@
             this.groupBox1.Controls.Add(this.listBoxFilePanel);
             this.groupBox1.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "FilePanelFolderTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Font = new System.Drawing.Font("White Rabbit", 28F);
             this.groupBox1.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelFolderTextColor;
             this.groupBox1.Location = new System.Drawing.Point(1, 1);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(798, 370);
+            this.groupBox1.Size = new System.Drawing.Size(798, 371);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alfa Player";
@@ -92,17 +93,17 @@
             this.panel2.Location = new System.Drawing.Point(0, 47);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(1);
-            this.panel2.Size = new System.Drawing.Size(800, 61);
+            this.panel2.Size = new System.Drawing.Size(800, 60);
             this.panel2.TabIndex = 8;
             // 
             // panel3
             // 
             this.panel3.Controls.Add(this.groupBox1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 108);
+            this.panel3.Location = new System.Drawing.Point(0, 107);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(1);
-            this.panel3.Size = new System.Drawing.Size(800, 372);
+            this.panel3.Size = new System.Drawing.Size(800, 373);
             this.panel3.TabIndex = 9;
             // 
             // listBoxFilePanel
@@ -124,13 +125,13 @@
             "..",
             "dir1",
             "music1.mp3"});
-            this.listBoxFilePanel.Location = new System.Drawing.Point(3, 34);
+            this.listBoxFilePanel.Location = new System.Drawing.Point(3, 32);
             this.listBoxFilePanel.Name = "listBoxFilePanel";
             this.listBoxFilePanel.SelectedItemBackColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedItemBackColor;
             this.listBoxFilePanel.SelectedItemForeColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedItemForeColor;
             this.listBoxFilePanel.SelectedSpecialItemForeColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedSpecialItemForeColor;
             this.listBoxFilePanel.ShowScrollbar = false;
-            this.listBoxFilePanel.Size = new System.Drawing.Size(792, 333);
+            this.listBoxFilePanel.Size = new System.Drawing.Size(792, 336);
             this.listBoxFilePanel.TabIndex = 1;
             this.listBoxFilePanel.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxFilePanel_DrawItem);
             this.listBoxFilePanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxFilePanel_KeyDown);
@@ -146,7 +147,7 @@
             this.labelSongTitle.Location = new System.Drawing.Point(1, 1);
             this.labelSongTitle.Name = "labelSongTitle";
             this.labelSongTitle.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.labelSongTitle.Size = new System.Drawing.Size(701, 59);
+            this.labelSongTitle.Size = new System.Drawing.Size(701, 58);
             this.labelSongTitle.Step = 1F;
             this.labelSongTitle.TabIndex = 2;
             this.labelSongTitle.Text = "Alfa Player";

@@ -19,6 +19,8 @@ namespace AlfaPlayer2
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
+            Console.WriteLine(">>>>>>>>>>>>> {0} {1}", AssemblyVersion, String.Format("Version {0}", AssemblyVersion));
+
         }
 
         #region Assembly Attribute Accessors

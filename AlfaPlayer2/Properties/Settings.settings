@@ -8,9 +8,6 @@
     <Setting Name="TitleBackColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">31, 36, 69</Value>
     </Setting>
-    <Setting Name="LastFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">F:\DATA\MUSIC\www.s-a-f.ro\music\mp3\</Value>
-    </Setting>
     <Setting Name="SelectedItemBackColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">DarkCyan</Value>
     </Setting>
@@ -35,9 +32,6 @@
     <Setting Name="FilePanelFolderTextColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Teal</Value>
     </Setting>
-    <Setting Name="LastFile" Type="System.String" Scope="User">
-      <Value Profile="(Default)">F:\DATA\MUSIC\www.s-a-f.ro\music\mp3\02 Mermaids.mp3</Value>
-    </Setting>
     <Setting Name="LastFilePos" Type="System.Double" Scope="User">
       <Value Profile="(Default)">100</Value>
     </Setting>
@@ -54,7 +48,16 @@
       <Value Profile="(Default)">Red</Value>
     </Setting>
     <Setting Name="OnACColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">41, 46, 79</Value>
+      <Value Profile="(Default)">Transparent</Value>
+    </Setting>
+    <Setting Name="LastFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.</Value>
+    </Setting>
+    <Setting Name="LastFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>
