@@ -354,6 +354,7 @@ namespace AlfaPlayer2
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             //Console.WriteLine(e.KeyCode);
+
             switch (e.KeyCode)
             {
                 case Keys.Left:
@@ -382,6 +383,48 @@ namespace AlfaPlayer2
 
                 case Keys.BrowserBack:
                     ChangeFolder(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + "..");
+                    break;
+                case Keys.Space:
+                    if (lastSpacePress == DateTime.MinValue)
+                    {
+                        lastSpacePress = DateTime.Now;
+                    }
+                    break;
+                case Keys.Q:
+                    if (lastQPress == DateTime.MinValue)
+                    {
+                        lastQPress = DateTime.Now;
+                    }
+                    break;
+            }
+        }
+
+        DateTime lastSpacePress = DateTime.MinValue;
+        DateTime lastQPress = DateTime.MinValue;
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Space:
+                    if (lastSpacePress > DateTime.MinValue && DateTime.Now - lastSpacePress > TimeSpan.FromSeconds(2))
+                    {
+                        if (Environment.ProcessorCount == 1) //eeepc 701
+                        {
+                            Application.SetSuspendState(PowerState.Hibernate, false, true);
+                        }
+
+                    }
+                    lastSpacePress = DateTime.MinValue;
+                    break;
+
+                case Keys.Q:
+                    if (lastQPress > DateTime.MinValue && DateTime.Now - lastQPress > TimeSpan.FromSeconds(2))
+                    {
+                        Application.Exit();
+
+                    }
+                    lastQPress = DateTime.MinValue;
                     break;
             }
         }
@@ -516,5 +559,6 @@ namespace AlfaPlayer2
         {
             SaveSettings();
         }
+
     }
 }

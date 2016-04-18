@@ -31,13 +31,13 @@
             this.components = new System.ComponentModel.Container();
             this.labelBatteryInfo = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.listBoxFilePanel = new AlfaPlayer.CListBox();
             this.timerPlayer = new System.Windows.Forms.Timer(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.listBoxFilePanel = new AlfaPlayer.CListBox();
-            this.labelSongTitle = new AlfaPlayer2.ScrollLabel();
             this.textProgressBar = new AlfaPlayer.TextProgressBar();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.labelSongTitle = new AlfaPlayer2.ScrollLabel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.textProgressBar2 = new AlfaPlayer.TextProgressBar();
             this.textProgressBar1 = new AlfaPlayer.TextProgressBar();
             this.groupBox1.SuspendLayout();
@@ -71,41 +71,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alfa Player";
             // 
-            // timerPlayer
-            // 
-            this.timerPlayer.Tick += new System.EventHandler(this.timerPlayer_Tick);
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.textProgressBar);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(1);
-            this.panel1.Size = new System.Drawing.Size(800, 47);
-            this.panel1.TabIndex = 7;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.labelSongTitle);
-            this.panel2.Controls.Add(this.labelBatteryInfo);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 47);
-            this.panel2.Name = "panel2";
-            this.panel2.Padding = new System.Windows.Forms.Padding(1);
-            this.panel2.Size = new System.Drawing.Size(800, 60);
-            this.panel2.TabIndex = 8;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.groupBox1);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 107);
-            this.panel3.Name = "panel3";
-            this.panel3.Padding = new System.Windows.Forms.Padding(1);
-            this.panel3.Size = new System.Drawing.Size(800, 373);
-            this.panel3.TabIndex = 9;
-            // 
             // listBoxFilePanel
             // 
             this.listBoxFilePanel.BackColor = global::AlfaPlayer2.Properties.Settings.Default.BackgroundColor;
@@ -136,22 +101,19 @@
             this.listBoxFilePanel.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxFilePanel_DrawItem);
             this.listBoxFilePanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxFilePanel_KeyDown);
             // 
-            // labelSongTitle
+            // timerPlayer
             // 
-            this.labelSongTitle.BackColor = global::AlfaPlayer2.Properties.Settings.Default.TitleBackColor;
-            this.labelSongTitle.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "TitleTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.labelSongTitle.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "TitleBackColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.labelSongTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelSongTitle.Font = new System.Drawing.Font("White Rabbit", 36F);
-            this.labelSongTitle.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.TitleTextColor;
-            this.labelSongTitle.Location = new System.Drawing.Point(1, 1);
-            this.labelSongTitle.Name = "labelSongTitle";
-            this.labelSongTitle.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.labelSongTitle.Size = new System.Drawing.Size(701, 58);
-            this.labelSongTitle.Step = 1F;
-            this.labelSongTitle.TabIndex = 2;
-            this.labelSongTitle.Text = "Alfa Player";
-            this.labelSongTitle.TimeoutSeconds = 0.01D;
+            this.timerPlayer.Tick += new System.EventHandler(this.timerPlayer_Tick);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.textProgressBar);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(1);
+            this.panel1.Size = new System.Drawing.Size(800, 47);
+            this.panel1.TabIndex = 7;
             // 
             // textProgressBar
             // 
@@ -169,6 +131,44 @@
             this.textProgressBar.TextColor = global::AlfaPlayer2.Properties.Settings.Default.ProgressTextColor;
             this.textProgressBar.Value = 50;
             this.textProgressBar.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textProgressBar_MouseClick);
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.labelSongTitle);
+            this.panel2.Controls.Add(this.labelBatteryInfo);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 47);
+            this.panel2.Name = "panel2";
+            this.panel2.Padding = new System.Windows.Forms.Padding(1);
+            this.panel2.Size = new System.Drawing.Size(800, 60);
+            this.panel2.TabIndex = 8;
+            // 
+            // labelSongTitle
+            // 
+            this.labelSongTitle.BackColor = global::AlfaPlayer2.Properties.Settings.Default.TitleBackColor;
+            this.labelSongTitle.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "TitleTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.labelSongTitle.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "TitleBackColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.labelSongTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelSongTitle.Font = new System.Drawing.Font("White Rabbit", 36F);
+            this.labelSongTitle.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.TitleTextColor;
+            this.labelSongTitle.Location = new System.Drawing.Point(1, 1);
+            this.labelSongTitle.Name = "labelSongTitle";
+            this.labelSongTitle.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.labelSongTitle.Size = new System.Drawing.Size(701, 58);
+            this.labelSongTitle.Step = 1F;
+            this.labelSongTitle.TabIndex = 2;
+            this.labelSongTitle.Text = "Alfa Player";
+            this.labelSongTitle.TimeoutSeconds = 0.01D;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.groupBox1);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(0, 107);
+            this.panel3.Name = "panel3";
+            this.panel3.Padding = new System.Windows.Forms.Padding(1);
+            this.panel3.Size = new System.Drawing.Size(800, 373);
+            this.panel3.TabIndex = 9;
             // 
             // textProgressBar2
             // 
@@ -225,6 +225,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.groupBox1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
