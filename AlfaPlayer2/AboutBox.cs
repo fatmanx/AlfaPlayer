@@ -105,13 +105,26 @@ namespace AlfaPlayer2
 
         private void AboutBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            
+
         }
 
         private void AboutBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
                 Close();
+        }
+
+
+        public Form ParentForm { get; set; }
+
+
+        private void AboutBox_Load(object sender, EventArgs e)
+        {
+            if (ParentForm != null)
+            {
+                this.Size = ParentForm.Size;
+                this.Location = ParentForm.Location;
+            }
         }
     }
 }

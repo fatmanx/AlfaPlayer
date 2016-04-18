@@ -191,6 +191,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "AboutBox1";
+            this.Load += new System.EventHandler(this.AboutBox_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AboutBox_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AboutBox_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();

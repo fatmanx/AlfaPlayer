@@ -347,7 +347,7 @@ namespace AlfaPlayer2
             }
             else if (e.KeyCode == Keys.F1)
             {
-                new AboutBox().ShowDialog(this);
+                new AboutBox { ParentForm = this }.ShowDialog(this);
             }
         }
 
@@ -491,10 +491,10 @@ namespace AlfaPlayer2
 
                 }
                 //Console.WriteLine(">>> {0}", reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds);
-                if (waveOut.PlaybackState==PlaybackState.Playing && reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds < 300)
+                if (waveOut.PlaybackState == PlaybackState.Playing && reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds < 300)
                 {
                     Console.WriteLine("Next");
-                    
+
                     PlayNext();
                 }
             }
