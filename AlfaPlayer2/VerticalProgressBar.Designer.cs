@@ -1,6 +1,6 @@
 ﻿namespace AlfaPlayer2
 {
-    partial class ScrollLabel
+    partial class VerticalProgressBar
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,21 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.timerRedraw = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // timerRedraw
+            // VerticalProgressBar
             // 
-            this.timerRedraw.Enabled = true;
-            this.timerRedraw.Interval = 10;
-            this.timerRedraw.Tick += new System.EventHandler(this.timerRedraw_Tick);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Name = "VerticalProgressBar";
+            this.Size = new System.Drawing.Size(74, 206);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Timer timerRedraw;
     }
 }

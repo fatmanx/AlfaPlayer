@@ -252,7 +252,7 @@ namespace AlfaPlayer2
                 this.WindowState = FormWindowState.Maximized;
             }
 
-            labelBatteryInfo.BackColor = Properties.Settings.Default.OnACColor;
+            //labelBatteryInfo.BackColor = Properties.Settings.Default.OnACColor;
             //Properties.Settings.Default.Upgrade();
             Util.DoUpgrade(Properties.Settings.Default);
             lastFolder = Properties.Settings.Default.LastFolder;
@@ -409,11 +409,7 @@ namespace AlfaPlayer2
                 case Keys.Space:
                     if (lastSpacePress > DateTime.MinValue && DateTime.Now - lastSpacePress > TimeSpan.FromSeconds(2))
                     {
-                        if (Environment.ProcessorCount == 1) //eeepc 701
-                        {
-                            Application.SetSuspendState(PowerState.Hibernate, false, true);
-                        }
-
+                        Hibernate();
                     }
                     lastSpacePress = DateTime.MinValue;
                     break;
@@ -429,6 +425,16 @@ namespace AlfaPlayer2
             }
         }
 
+
+
+        void Hibernate()
+        {
+            if (Environment.ProcessorCount == 1) //eeepc 701
+            {
+                Application.SetSuspendState(PowerState.Hibernate, false, true);
+            }
+
+        }
 
         private void Stop()
         {
@@ -545,15 +551,22 @@ namespace AlfaPlayer2
 
             if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
             {
-                labelBatteryInfo.BackColor = Properties.Settings.Default.OnBatteryColor;
+                verticalProgressBar1.FillColor = Properties.Settings.Default.OnBatteryColor;
+                //labelBatteryInfo.BackColor = Properties.Settings.Default.OnBatteryColor;
             }
             else
             {
-                labelBatteryInfo.BackColor = Properties.Settings.Default.OnACColor;
+                verticalProgressBar1.FillColor = Properties.Settings.Default.OnACColor;
+                //labelBatteryInfo.BackColor = Properties.Settings.Default.OnACColor;
             }
-            labelBatteryInfo.Text = string.Format("{0:00}", 100 * SystemInformation.PowerStatus.BatteryLifePercent);
+            verticalProgressBar1.Value = (int)(100 * SystemInformation.PowerStatus.BatteryLifePercent);
+            Console.WriteLine("SystemInformation.PowerStatus.BatteryLifePercent {0} {1}", SystemInformation.PowerStatus.BatteryLifePercent, verticalProgressBar1.Value);
+            //labelBatteryInfo.Text = string.Format("{0:00}", 100 * SystemInformation.PowerStatus.BatteryLifePercent);
+
 
         }
+
+
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {

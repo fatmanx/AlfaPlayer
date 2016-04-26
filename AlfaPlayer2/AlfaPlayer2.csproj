@@ -106,6 +106,12 @@
       <DependentUpon>TextProgressBar.cs</DependentUpon>
     </Compile>
     <Compile Include="Util.cs" />
+    <Compile Include="VerticalProgressBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VerticalProgressBar.Designer.cs">
+      <DependentUpon>VerticalProgressBar.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -127,6 +133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TextProgressBar.resx">
       <DependentUpon>TextProgressBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VerticalProgressBar.resx">
+      <DependentUpon>VerticalProgressBar.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
