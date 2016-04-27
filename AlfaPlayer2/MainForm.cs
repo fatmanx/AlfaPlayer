@@ -282,8 +282,9 @@ namespace AlfaPlayer2
 
             }
             aboutBox = new AboutBox { ParentForm = this };
-        }
 
+
+        }
         private void InitFilePanel()
         {
             if (File.Exists(lastFile))
@@ -395,6 +396,7 @@ namespace AlfaPlayer2
                     PlayPause();
                     break;
 
+
                 case Keys.BrowserBack:
                     ChangeFolder(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + "..");
                     break;
@@ -410,7 +412,22 @@ namespace AlfaPlayer2
                         lastQPress = DateTime.Now;
                     }
                     break;
+
+                case Keys.VolumeUp:
+                case Keys.PageUp:
+                    MasterVolume(1000);
+                    break;
+                case Keys.VolumeDown:
+                case Keys.PageDown:
+                    MasterVolume(-1000);
+                    break;
             }
+        }
+
+
+        void MasterVolume(int val = 1000)
+        {
+            Process.Start(Path.GetDirectoryName(Application.ExecutablePath) + "/nircmd.exe", " changesysvolume " + val);
         }
 
         DateTime lastSpacePress = DateTime.MinValue;
@@ -418,7 +435,7 @@ namespace AlfaPlayer2
         TimeSpan sleepTime = TimeSpan.FromSeconds(2);
         TimeSpan hibernateTime = TimeSpan.FromSeconds(5);
 
-        
+
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -671,6 +688,6 @@ namespace AlfaPlayer2
             SaveSettings();
         }
 
-       
+
     }
 }

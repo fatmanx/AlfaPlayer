@@ -26,9 +26,9 @@ namespace AlfaPlayer2
                 
 
 
-                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-                Application.ThreadException += Application_ThreadException;
-                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                //Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                //Application.ThreadException += Application_ThreadException;
+                //AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
                 Application.Run(new MainForm());
             }
             catch
