@@ -4,9 +4,11 @@ using NAudio.WindowsMediaFormat;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
@@ -14,6 +16,9 @@ namespace AlfaPlayer2
 {
     public partial class MainForm : Form
     {
+
+
+
         private byte[] FLAC_HEADER = new byte[] { 0x66, 0x4C, 0x61, 0x43, 0x00, 0x00, 0x00, 0x22 };
 
         private byte[] MP3_HEADER = new byte[] { 0x49, 0x44, 0x33 };
@@ -42,7 +47,9 @@ namespace AlfaPlayer2
 
         public MainForm()
         {
+
             InitializeComponent();
+
         }
 
         private enum FileType
@@ -203,7 +210,7 @@ namespace AlfaPlayer2
                 try
                 {
                     double s = 0.0005 * (100 + Math.Max(900, (DateTime.Now - lastSeekForward).TotalMilliseconds));
-                    waveOut.Volume = 0.1f * maxVolume;
+                    waveOut.Volume = 0.05f * maxVolume;
                     reader.CurrentTime += TimeSpan.FromSeconds(1 / s);
                 }
                 catch (Exception) { }
@@ -217,7 +224,7 @@ namespace AlfaPlayer2
                 try
                 {
                     double s = 0.0005 * (100 + Math.Max(900, (DateTime.Now - lastSeekBackward).TotalMilliseconds));
-                    waveOut.Volume = 0.1f * maxVolume;
+                    waveOut.Volume = 0.05f * maxVolume;
                     reader.CurrentTime += TimeSpan.FromSeconds(-1 / s);
                 }
                 catch (Exception) { }
@@ -231,7 +238,7 @@ namespace AlfaPlayer2
             {
                 try
                 {
-                    waveOut.Volume = 0.1f * maxVolume;
+                    waveOut.Volume = 0.05f * maxVolume;
                     reader.CurrentTime = TimeSpan.FromSeconds(seconds);
                 }
                 catch (Exception) { }
@@ -242,6 +249,7 @@ namespace AlfaPlayer2
             Console.WriteLine("SAVING");
             Properties.Settings.Default.LastFile = lastFile;
             Properties.Settings.Default.LastFilePos = lastFilePos;
+            Properties.Settings.Default.MaxVolume = maxVolume;
             Properties.Settings.Default.Save();
         }
 
@@ -252,8 +260,6 @@ namespace AlfaPlayer2
                 this.WindowState = FormWindowState.Maximized;
             }
 
-            //labelBatteryInfo.BackColor = Properties.Settings.Default.OnACColor;
-            //Properties.Settings.Default.Upgrade();
             Util.DoUpgrade(Properties.Settings.Default);
             lastFolder = Properties.Settings.Default.LastFolder;
             lastFile = Properties.Settings.Default.LastFile;
@@ -270,6 +276,12 @@ namespace AlfaPlayer2
             listBoxFilePanel.Select();
             timerPlayer.Enabled = true;
 
+            if (isEEE701())
+            {
+                TopMost = true;
+
+            }
+            aboutBox = new AboutBox { ParentForm = this };
         }
 
         private void InitFilePanel()
@@ -347,9 +359,11 @@ namespace AlfaPlayer2
             }
             else if (e.KeyCode == Keys.F1)
             {
-                new AboutBox { ParentForm = this }.ShowDialog(this);
+                aboutBox.ShowDialog(this);
             }
         }
+
+        AboutBox aboutBox;
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
@@ -401,13 +415,20 @@ namespace AlfaPlayer2
 
         DateTime lastSpacePress = DateTime.MinValue;
         DateTime lastQPress = DateTime.MinValue;
+        TimeSpan sleepTime = TimeSpan.FromSeconds(2);
+        TimeSpan hibernateTime = TimeSpan.FromSeconds(5);
 
+        
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.Space:
-                    if (lastSpacePress > DateTime.MinValue && DateTime.Now - lastSpacePress > TimeSpan.FromSeconds(2))
+                    if (lastSpacePress > DateTime.MinValue && DateTime.Now - lastSpacePress > sleepTime && DateTime.Now - lastSpacePress < hibernateTime)
+                    {
+                        Sleep();
+                    }
+                    if (lastSpacePress > DateTime.MinValue && DateTime.Now - lastSpacePress > hibernateTime)
                     {
                         Hibernate();
                     }
@@ -425,11 +446,24 @@ namespace AlfaPlayer2
             }
         }
 
+        bool isEEE701()
+        {
+            return Environment.ProcessorCount == 1;
+        }
 
+        void Sleep()
+        {
+            Console.WriteLine("---------------------------------------------------SLEEP NOW");
+            if (isEEE701())
+            {
+                Application.SetSuspendState(PowerState.Suspend, false, true);
+            }
 
+        }
         void Hibernate()
         {
-            if (Environment.ProcessorCount == 1) //eeepc 701
+            Console.WriteLine("---------------------------------------------------HIBERNATE NOW");
+            if (isEEE701())
             {
                 Application.SetSuspendState(PowerState.Hibernate, false, true);
             }
@@ -539,33 +573,97 @@ namespace AlfaPlayer2
 
 
                 }
-                //Console.WriteLine(">>> {0}", reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds);
-                if (waveOut.PlaybackState == PlaybackState.Playing && reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds < 300)
+                if (waveOut != null)
                 {
-                    Console.WriteLine("Next");
+                    //Console.WriteLine(">>> {0}", reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds);
+                    if (waveOut.PlaybackState == PlaybackState.Playing && reader.TotalTime.TotalMilliseconds - reader.CurrentTime.TotalMilliseconds < 300)
+                    {
+                        Console.WriteLine("Next");
 
-                    PlayNext();
+                        PlayNext();
+                    }
+                    if (waveOut.Volume < maxVolume)
+                        waveOut.Volume += (maxVolume - waveOut.Volume) * 0.1f;
                 }
             }
 
 
-            if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
-            {
-                verticalProgressBar1.FillColor = Properties.Settings.Default.OnBatteryColor;
-                //labelBatteryInfo.BackColor = Properties.Settings.Default.OnBatteryColor;
-            }
-            else
-            {
-                verticalProgressBar1.FillColor = Properties.Settings.Default.OnACColor;
-                //labelBatteryInfo.BackColor = Properties.Settings.Default.OnACColor;
-            }
-            verticalProgressBar1.Value = (int)(100 * SystemInformation.PowerStatus.BatteryLifePercent);
-            Console.WriteLine("SystemInformation.PowerStatus.BatteryLifePercent {0} {1}", SystemInformation.PowerStatus.BatteryLifePercent, verticalProgressBar1.Value);
-            //labelBatteryInfo.Text = string.Format("{0:00}", 100 * SystemInformation.PowerStatus.BatteryLifePercent);
+            SetBatteryColor();
 
+            PowerLine = SystemInformation.PowerStatus.PowerLineStatus;
+
+            if (!Focused && !aboutBox.Visible)
+            {
+                Activate();
+                listBoxFilePanel.Focus();
+            }
 
         }
 
+
+        private PowerLineStatus __PowerLine = SystemInformation.PowerStatus.PowerLineStatus;
+
+        public PowerLineStatus PowerLine
+        {
+            get { return __PowerLine; }
+            set
+            {
+
+                if (value != PowerLineStatus.Online && value != __PowerLine)
+                {
+                    timerHibernate.Enabled = true;
+                    lastPowerDownTime = DateTime.Now;
+                }
+                __PowerLine = value;
+            }
+        }
+
+        DateTime lastPowerDownTime = DateTime.MaxValue;
+        private void timerHibernate_Tick(object sender, EventArgs e)
+        {
+            if (DateTime.Now - lastPowerDownTime > TimeSpan.FromSeconds(10))
+            {
+                lastPowerDownTime = DateTime.MaxValue;
+                Hibernate();
+                timerHibernate.Enabled = false;
+            }
+        }
+
+
+        void SetBatteryColor()
+        {
+            float battery = SystemInformation.PowerStatus.BatteryLifePercent;
+
+            var br = Properties.Settings.Default.OnBatteryColor.R;
+            var bg = Properties.Settings.Default.OnBatteryColor.G;
+            var bb = Properties.Settings.Default.OnBatteryColor.B;
+
+
+            var ar = Properties.Settings.Default.OnACColor.R;
+            var ag = Properties.Settings.Default.OnACColor.G;
+            var ab = Properties.Settings.Default.OnACColor.B;
+
+
+
+
+            int r = (int)(br - (br - ar) * battery);
+            int g = (int)(bg - (bg - ag) * battery);
+            int b = (int)(bb - (bb - ab) * battery);
+
+            Color cc = Color.FromArgb(r, g, b);
+
+
+            verticalProgressBar1.Value = (int)(100 * battery);
+            if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
+            {
+                verticalProgressBar1.FillColor = Properties.Settings.Default.OnACColor;
+            }
+            else
+            {
+                verticalProgressBar1.FillColor = cc;
+            }
+
+        }
 
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -573,5 +671,6 @@ namespace AlfaPlayer2
             SaveSettings();
         }
 
+       
     }
 }

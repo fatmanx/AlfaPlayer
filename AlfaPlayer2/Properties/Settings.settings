@@ -36,7 +36,7 @@
       <Value Profile="(Default)">100</Value>
     </Setting>
     <Setting Name="MaxVolume" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.2</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="SelectedSpecialItemForeColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">0, 192, 192</Value>
@@ -48,7 +48,7 @@
       <Value Profile="(Default)">Red</Value>
     </Setting>
     <Setting Name="OnACColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Transparent</Value>
+      <Value Profile="(Default)">0, 192, 192</Value>
     </Setting>
     <Setting Name="LastFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">.</Value>

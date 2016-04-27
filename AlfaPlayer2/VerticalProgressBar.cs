@@ -52,6 +52,7 @@ namespace AlfaPlayer2
             rec.Height = (int)((rec.Height - Padding.Size.Height) * ((double)Value / Maximum));
 
             e.Graphics.FillRectangle(__FillBrush, Padding.Left, -Padding.Bottom + e.ClipRectangle.Height - rec.Height, rec.Width, rec.Height);
+
         }
     }
 }

@@ -40,6 +40,7 @@
             this.textProgressBar = new AlfaPlayer.TextProgressBar();
             this.textProgressBar2 = new AlfaPlayer.TextProgressBar();
             this.textProgressBar1 = new AlfaPlayer.TextProgressBar();
+            this.timerHibernate = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -56,7 +57,7 @@
             this.groupBox1.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelFolderTextColor;
             this.groupBox1.Location = new System.Drawing.Point(1, 1);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(798, 428);
+            this.groupBox1.Size = new System.Drawing.Size(798, 448);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alfa Player";
@@ -77,28 +78,29 @@
             // 
             // panel2
             // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.labelSongTitle);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 60);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(1);
-            this.panel2.Size = new System.Drawing.Size(800, 110);
+            this.panel2.Size = new System.Drawing.Size(800, 90);
             this.panel2.TabIndex = 8;
             // 
             // panel3
             // 
             this.panel3.Controls.Add(this.groupBox1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 170);
+            this.panel3.Location = new System.Drawing.Point(0, 150);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(1);
-            this.panel3.Size = new System.Drawing.Size(800, 430);
+            this.panel3.Size = new System.Drawing.Size(800, 450);
             this.panel3.TabIndex = 9;
             // 
             // listBoxFilePanel
             // 
             this.listBoxFilePanel.BackColor = global::AlfaPlayer2.Properties.Settings.Default.BackgroundColor;
-            this.listBoxFilePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.listBoxFilePanel.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "BackgroundColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "FilePanelTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.listBoxFilePanel.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItemBackColor", global::AlfaPlayer2.Properties.Settings.Default, "SelectedItemBackColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
@@ -120,22 +122,22 @@
             this.listBoxFilePanel.SelectedItemForeColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedItemForeColor;
             this.listBoxFilePanel.SelectedSpecialItemForeColor = global::AlfaPlayer2.Properties.Settings.Default.SelectedSpecialItemForeColor;
             this.listBoxFilePanel.ShowScrollbar = false;
-            this.listBoxFilePanel.Size = new System.Drawing.Size(748, 393);
+            this.listBoxFilePanel.Size = new System.Drawing.Size(782, 413);
             this.listBoxFilePanel.TabIndex = 1;
             this.listBoxFilePanel.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxFilePanel_DrawItem);
             this.listBoxFilePanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxFilePanel_KeyDown);
             // 
             // verticalProgressBar1
             // 
-            this.verticalProgressBar1.BackColor = global::AlfaPlayer2.Properties.Settings.Default.OnACColor;
-            this.verticalProgressBar1.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "OnACColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.verticalProgressBar1.BackColor = global::AlfaPlayer2.Properties.Settings.Default.BackgroundColor;
+            this.verticalProgressBar1.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "BackgroundColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.verticalProgressBar1.Dock = System.Windows.Forms.DockStyle.Right;
             this.verticalProgressBar1.FillColor = System.Drawing.Color.Blue;
-            this.verticalProgressBar1.Location = new System.Drawing.Point(751, 32);
+            this.verticalProgressBar1.Location = new System.Drawing.Point(785, 32);
             this.verticalProgressBar1.Maximum = 100;
             this.verticalProgressBar1.Name = "verticalProgressBar1";
             this.verticalProgressBar1.Padding = new System.Windows.Forms.Padding(1);
-            this.verticalProgressBar1.Size = new System.Drawing.Size(44, 393);
+            this.verticalProgressBar1.Size = new System.Drawing.Size(10, 413);
             this.verticalProgressBar1.TabIndex = 2;
             this.verticalProgressBar1.Value = 50;
             // 
@@ -150,7 +152,7 @@
             this.labelSongTitle.Location = new System.Drawing.Point(1, 1);
             this.labelSongTitle.Name = "labelSongTitle";
             this.labelSongTitle.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.labelSongTitle.Size = new System.Drawing.Size(798, 108);
+            this.labelSongTitle.Size = new System.Drawing.Size(796, 86);
             this.labelSongTitle.Step = 2F;
             this.labelSongTitle.TabIndex = 2;
             this.labelSongTitle.Text = "Alfa Player";
@@ -203,6 +205,10 @@
             this.textProgressBar1.TextColor = global::AlfaPlayer2.Properties.Settings.Default.ProgressTextColor;
             this.textProgressBar1.Value = 0;
             // 
+            // timerHibernate
+            // 
+            this.timerHibernate.Tick += new System.EventHandler(this.timerHibernate_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(23F, 31F);
@@ -250,6 +256,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private VerticalProgressBar verticalProgressBar1;
+        private System.Windows.Forms.Timer timerHibernate;
     }
 }
 

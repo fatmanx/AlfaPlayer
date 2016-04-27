@@ -157,7 +157,7 @@ namespace AlfaPlayer2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public float MaxVolume {
             get {
                 return ((float)(this["MaxVolume"]));
@@ -205,7 +205,7 @@ namespace AlfaPlayer2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Transparent")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 192, 192")]
         public global::System.Drawing.Color OnACColor {
             get {
                 return ((global::System.Drawing.Color)(this["OnACColor"]));
