@@ -99,6 +99,7 @@
     <Compile Include="CListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CPadding.cs" />
     <Compile Include="CustomExtensions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -173,12 +174,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\md\Documents\Visual Studio 2015\Projects\AlfaPlayer2\NAudio.Flac\NAudio.Flac.csproj">
-      <Project>{1bd0fa41-17b8-494c-bd88-5bf5835f6983}</Project>
-      <Name>NAudio.Flac</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="car stereo white.ico" />
     <Content Include="car stereo.ico" />
     <Content Include="nircmd.exe">
@@ -194,6 +189,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Naudio.flac\NAudio.Flac.csproj">
+      <Project>{1bd0fa41-17b8-494c-bd88-5bf5835f6983}</Project>
+      <Name>NAudio.Flac</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

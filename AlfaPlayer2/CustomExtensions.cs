@@ -15,5 +15,16 @@ namespace AlfaPlayer2
             else return val;
         }
 
+        public static string Reverse(this string val)
+        {
+            char[] array = new char[val.Length];
+            int forward = 0;
+            for (int i = val.Length - 1; i >= 0; i--)
+            {
+                array[forward++] = val[i];
+            }
+            return new string(array);
+        }
+
     }
 }

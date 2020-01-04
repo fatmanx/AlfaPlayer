@@ -37,6 +37,10 @@
             this.timerRedraw.Enabled = true;
             this.timerRedraw.Interval = 10;
             this.timerRedraw.Tick += new System.EventHandler(this.timerRedraw_Tick);
+            // 
+            // ScrollLabel
+            // 
+            this.Resize += new System.EventHandler(this.ScrollLabel_Resize);
             this.ResumeLayout(false);
 
         }

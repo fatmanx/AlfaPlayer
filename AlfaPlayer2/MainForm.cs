@@ -2,6 +2,7 @@
 using NAudio.WindowsMediaFormat;
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -129,21 +130,68 @@ namespace AlfaPlayer2
 
         private void PlayNext()
         {
-            if (listBoxFilePanel.SelectedIndex < listBoxFilePanel.Items.Count - 1)
+            PlayNextX();
+        }
+        private void PlayNextX(bool isReverse = false)
+        {
+            try
             {
-                listBoxFilePanel.SelectedIndex++;
-                OpenFile(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + listBoxFilePanel.SelectedItem.ToString());
+                var lfi = new FileInfo(lastFile);
+                var cFile = lfi.Name;
+                var cDir = lfi.Directory.FullName;
+                var fi = new FileInfo(cDir + Path.DirectorySeparatorChar + cFile);
+                var files = getFiles(fi.Directory.Parent.Parent.Parent.FullName, extensionFilter);
+                List<string> filez = new List<string>(files);
+                filez.Sort();
+                if (isReverse)
+                {
+                    filez.Reverse();
+                }
+                int idx = 0;
+                bool found = false;
+                foreach (var file in filez)
+                {
+                    if (file == fi.FullName)
+                    {
+                        if (idx < files.Length - 1)
+                        {
+                            var f = filez[idx + 1];
+                            var ffile = new FileInfo(f);
+                            //todo tbd
+                            ChangeFolder(ffile.DirectoryName);
+                            OpenFile(ffile.FullName);
+                            found = true;
+                        }
+                        break;
+                    }
+                    idx++;
+                }
+                if (!found)
+                {
+                    var f = filez[0];
+                    var ffile = new FileInfo(f);
+                    ChangeFolder(ffile.DirectoryName);
+                    OpenFile(ffile.FullName);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
             }
         }
 
+
         private void PlayPrev()
         {
-            if (listBoxFilePanel.SelectedIndex > 0)
-            {
-                listBoxFilePanel.SelectedIndex--;
-            }
-            OpenFile(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + listBoxFilePanel.SelectedItem.ToString());
+            PlayNextX(true);
+            //if (listBoxFilePanel.SelectedIndex > 0)
+            //{
+            //    listBoxFilePanel.SelectedIndex--;
+            //}
+            //OpenFile(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + listBoxFilePanel.SelectedItem.ToString());
         }
+
         private void OpenFile(string fn, double pos = 0)
         {
             Console.WriteLine(fn);
@@ -253,8 +301,40 @@ namespace AlfaPlayer2
             Properties.Settings.Default.Save();
         }
 
+        //string extensions = "*.mp3|*.wav|*.flac";
+
+        public string[] getFiles(string SourceFolder, string Filter, System.IO.SearchOption searchOption = SearchOption.AllDirectories)
+        {
+            // ArrayList will hold all file names
+            ArrayList alFiles = new ArrayList();
+
+            // Create an array of filter string
+            string[] MultipleFilters = Filter.Split('|');
+
+            // for each filter find mathing file names
+            foreach (string FileFilter in MultipleFilters)
+            {
+                // add found file names to array list
+                alFiles.AddRange(Directory.GetFiles(SourceFolder, FileFilter, searchOption));
+            }
+            alFiles.Sort();
+
+            // returns string array of relevant file names
+            return (string[])alFiles.ToArray(typeof(string));
+        }
+        string extensionFilter = "";
         private void MainForm_Load(object sender, EventArgs e)
         {
+
+            extensionFilter = "*" + string.Join("|*", extensions);
+            //Console.WriteLine("------------------------------------");
+            //var di = new DirectoryInfo(".");
+            //var files = getFiles(".", extensions, SearchOption.AllDirectories);
+            //foreach(var file in files)
+            //{
+            //    Console.WriteLine("*** {0}", file);
+            //}
+
             if (Screen.PrimaryScreen.WorkingArea.Height < 1024)
             {
                 this.WindowState = FormWindowState.Maximized;
@@ -278,13 +358,14 @@ namespace AlfaPlayer2
 
             if (isEEE701())
             {
-                TopMost = true;
+                //TopMost = true;
 
             }
             aboutBox = new AboutBox { ParentForm = this };
 
 
         }
+
         private void InitFilePanel()
         {
             if (File.Exists(lastFile))
@@ -301,14 +382,17 @@ namespace AlfaPlayer2
             }
         }
 
-        private void ChangeFolder(string folder)
+        string[] extensions = { ".mp3", ".flac", ".wma", ".wav", ".aac" };
+
+        private void ChangeFolder(string folder, string sourceFolderName = null)
         {
             try
             {
                 folder = Path.GetFullPath(folder);
                 Console.WriteLine("Change folder -> {0}", folder);
                 List<string> dirs = new List<string>(Directory.GetDirectories(folder).Select(f => { f = ":" + f.Substring(f.LastIndexOf(Path.DirectorySeparatorChar) + 1); return f; }).ToArray());
-                string[] extensions = { ".mp3", ".flac", ".wma" };
+                dirs.Sort();
+
 
                 List<string> files = new List<string>(Directory.GetFiles(folder, "*.*")
                     .Where(f => extensions.Contains(System.IO.Path.GetExtension(f).ToLower())).Select(f => { f = f.Substring(f.LastIndexOf(Path.DirectorySeparatorChar) + 1); return f; }).ToArray());
@@ -317,23 +401,39 @@ namespace AlfaPlayer2
                 dirs.AddRange(files);
 
                 listBoxFilePanel.DataSource = dirs;
+                listBoxFilePanel.Tag = folder;
 
                 SetFolderLabel(folder);
+
+
+                if (!string.IsNullOrEmpty(sourceFolderName))
+                {
+                    listBoxFilePanel.SelectedItem = ":" + sourceFolderName;
+                }
+
+
                 Properties.Settings.Default.LastFolder = folder;
                 Properties.Settings.Default.Save();
+
+
+
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         private void SetFolderLabel(string folder)
         {
             groupBox1.Tag = folder;
-            int max = 25;
+            int max = 30;
             if (folder.Length > max)
             {
                 int dif = folder.Length - max;
                 Console.WriteLine("{0}  {1} {2}", folder.Length, max, dif);
-                folder = folder.Substring(0, folder.Length / 2 - dif / 2) + "..." + folder.Substring(folder.Length / 2 + dif / 2);
+                //folder = folder.Substring(0, folder.Length / 2 - dif / 2) + "..." + folder.Substring(folder.Length / 2 + dif / 2);
+                folder = "..." + folder.Reverse().Substring(0, max).Reverse();
             }
 
             groupBox1.Text = folder;
@@ -344,14 +444,15 @@ namespace AlfaPlayer2
 
             if (e.KeyCode == Keys.Return)
             {
+                var dir = groupBox1.Tag.ToString();
                 var sel = listBoxFilePanel.SelectedItem.ToString();
                 if (sel.StartsWith(":"))
                 {
-                    ChangeFolder(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + sel.Substring(1));
+                    ChangeFolder(dir + Path.DirectorySeparatorChar + sel.Substring(1), new DirectoryInfo(dir).Name);
                 }
                 else
                 {
-                    OpenFile(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + listBoxFilePanel.SelectedItem.ToString());
+                    OpenFile(dir + Path.DirectorySeparatorChar + listBoxFilePanel.SelectedItem.ToString());
                 }
             }
             else if (e.KeyCode == Keys.Right || e.KeyCode == Keys.Left/* || e.KeyCode == Keys.PageUp || e.KeyCode == Keys.PageDown*/)
@@ -380,10 +481,12 @@ namespace AlfaPlayer2
                     SeekForward();
                     break;
 
+                case Keys.N:
                 case Keys.MediaNextTrack:
                     PlayNext();
                     break;
 
+                case Keys.Z:
                 case Keys.MediaPreviousTrack:
                     PlayPrev();
                     break;
@@ -393,14 +496,15 @@ namespace AlfaPlayer2
                     break;
 
                 case Keys.MediaPlayPause:
+                case Keys.Space:
                     PlayPause();
                     break;
 
 
                 case Keys.BrowserBack:
-                    ChangeFolder(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + "..");
+                    ChangeFolder(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + "..", new DirectoryInfo(groupBox1.Tag.ToString()).Name);
                     break;
-                case Keys.Space:
+                case Keys.Escape:
                     if (lastSpacePress == DateTime.MinValue)
                     {
                         lastSpacePress = DateTime.Now;
@@ -440,14 +544,14 @@ namespace AlfaPlayer2
         {
             switch (e.KeyCode)
             {
-                case Keys.Space:
+                case Keys.Escape:
                     if (lastSpacePress > DateTime.MinValue && DateTime.Now - lastSpacePress > sleepTime && DateTime.Now - lastSpacePress < hibernateTime)
                     {
                         Sleep();
                     }
                     if (lastSpacePress > DateTime.MinValue && DateTime.Now - lastSpacePress > hibernateTime)
                     {
-                        Hibernate();
+                        //Hibernate();
                     }
                     lastSpacePress = DateTime.MinValue;
                     break;
@@ -465,6 +569,7 @@ namespace AlfaPlayer2
 
         bool isEEE701()
         {
+            return true;
             return Environment.ProcessorCount == 1;
         }
 
@@ -477,6 +582,7 @@ namespace AlfaPlayer2
             }
 
         }
+
         void Hibernate()
         {
             Console.WriteLine("---------------------------------------------------HIBERNATE NOW");
@@ -567,10 +673,14 @@ namespace AlfaPlayer2
                     string tit = "";
                     if (!string.IsNullOrEmpty(tag.Tag.Title))
                     {
-
+                        if (tag.Tag.Artists.Length > 0)
+                        {
+                            tit = string.Format("{0} - {1}", tag.Tag.Artists[0], tag.Tag.Title);
+                        }
+                        else
                         if (tag.Tag.AlbumArtists.Length > 0)
                         {
-                            tit = string.Format("{1} ({0})", tag.Tag.AlbumArtists[0], tag.Tag.Title);
+                            tit = string.Format("{0} - {1}", tag.Tag.AlbumArtists[0], tag.Tag.Title);
                         }
                         else
                         {
@@ -586,6 +696,11 @@ namespace AlfaPlayer2
                     if (labelSongTitle.Text != tit)
                     {
                         labelSongTitle.Text = tit;
+                    }
+
+                    if (labelSongInfo.Text != tag.Tag.Album)
+                    {
+                        labelSongInfo.Text = tag.Tag.Album;
                     }
 
 
@@ -605,13 +720,14 @@ namespace AlfaPlayer2
             }
 
 
-            SetBatteryColor();
+            //SetBatteryColor();
 
             PowerLine = SystemInformation.PowerStatus.PowerLineStatus;
 
             if (!Focused && !aboutBox.Visible)
             {
-                Activate();
+                //todo reactivate
+                //Activate();
                 listBoxFilePanel.Focus();
             }
 
@@ -670,15 +786,15 @@ namespace AlfaPlayer2
             Color cc = Color.FromArgb(r, g, b);
 
 
-            verticalProgressBar1.Value = (int)(100 * battery);
-            if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
-            {
-                verticalProgressBar1.FillColor = Properties.Settings.Default.OnACColor;
-            }
-            else
-            {
-                verticalProgressBar1.FillColor = cc;
-            }
+            //verticalProgressBar1.Value = (int)(100 * battery);
+            //if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
+            //{
+            //    verticalProgressBar1.FillColor = Properties.Settings.Default.OnACColor;
+            //}
+            //else
+            //{
+            //    verticalProgressBar1.FillColor = cc;
+            //}
 
         }
 

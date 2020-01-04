@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using AlfaPlayer2;
 
 namespace AlfaPlayer
 {
@@ -42,7 +43,10 @@ namespace AlfaPlayer
 
         public Color TextColor { get; set; }
 
-
+        public int PaddingTop { get; set; }
+        public int PaddingBottom { get; set; }
+        public int PaddingLeft { get; set; }
+        public int PaddingRight { get; set; }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -58,7 +62,7 @@ namespace AlfaPlayer
                 e.Graphics.FillRectangle(foreBrush, Padding.Left, Padding.Top, w * W, H);
 
                 var size = TextRenderer.MeasureText(ProgressText, Font);
-                TextRenderer.DrawText(e.Graphics, ProgressText, Font, new Point(Padding.Left + (W - size.Width) / 2, 3 + Padding.Top + (H - size.Height) / 2), TextColor);
+                TextRenderer.DrawText(e.Graphics, ProgressText, Font, new Point(PaddingLeft + (W - size.Width) / 2, 3 + PaddingTop + (H - size.Height) / 2), TextColor);
             }
             catch { }
         }
