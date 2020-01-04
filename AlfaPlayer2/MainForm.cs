@@ -1,4 +1,6 @@
-﻿using NAudio.Wave;
+﻿using NAudio.Dsp;
+using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using NAudio.WindowsMediaFormat;
 
 using System;
@@ -28,7 +30,8 @@ namespace AlfaPlayer2
 
 
 
-        private WaveStream reader;
+        private AudioFileReader reader;
+
 
         private TagLib.File tag;
 
@@ -61,13 +64,19 @@ namespace AlfaPlayer2
             WMA
         }
 
+
+
         private void listBoxFilePanel_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0) return;
             Rectangle r = e.Bounds;
-            r.Offset(0, (int)((e.Bounds.Height - e.Font.Size) / 2));
+            r.Offset(0, (int)((e.Bounds.Height - e.Font.Size) / 2) + listBoxFilePanel.PaddingTop);
             r.Width *= 10;
+            Brush b = listBoxFilePanel.foreBrush;
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+
+                b = listBoxFilePanel.selectedItemForeBrush;
                 e = new DrawItemEventArgs(e.Graphics,
                                           e.Font,
                                           e.Bounds,
@@ -75,10 +84,21 @@ namespace AlfaPlayer2
                                           e.State ^ DrawItemState.Selected,
                                           e.ForeColor,
                                           listBoxFilePanel.SelectedItemBackColor);//Choose the color
+            }
+            else
+            {
+                e = new DrawItemEventArgs(e.Graphics,
+                                          e.Font,
+                                          e.Bounds,
+                                          e.Index,
+                                          e.State,
+                                          listBoxFilePanel.ForeColor,
+                                          listBoxFilePanel.BackColor);//Choose the color
 
+            }
             e.DrawBackground();
 
-            Brush b = listBoxFilePanel.selectedItemForeBrush;
+
 
             var sss = listBoxFilePanel.Items[e.Index].ToString();
             if (sss.StartsWith(":"))
@@ -86,8 +106,11 @@ namespace AlfaPlayer2
                 sss = "[" + sss.Substring(1) + "]";
                 b = listBoxFilePanel.selectedSpecialItemForeBrush;
             }
+
             e.Graphics.DrawString(sss, e.Font, b, r, StringFormat.GenericDefault);
         }
+
+
         private FileType DetectFileType(string fn)
         {
             FileType ft = FileType.None;
@@ -136,10 +159,34 @@ namespace AlfaPlayer2
         {
             try
             {
-                var lfi = new FileInfo(lastFile);
+
+                DirectoryInfo root = null;
+                try
+                {
+                    root = new DirectoryInfo(Properties.Settings.Default.RootFolder);
+                }
+                catch { }
+
+
+                FileInfo lfi = null;
+                try
+                {
+                    lfi = new FileInfo(lastFile);
+                }
+                catch { }
+
+                if (root == null || lfi == null || (lfi != null && !lfi.DirectoryName.Contains(root.FullName)))
+                {
+                    aboutBox.ShowDialog(this);
+                    return;
+                }
+
+
                 var cFile = lfi.Name;
                 var cDir = lfi.Directory.FullName;
                 var fi = new FileInfo(cDir + Path.DirectorySeparatorChar + cFile);
+
+
                 var files = getFiles(fi.Directory.Parent.Parent.Parent.FullName, extensionFilter);
                 List<string> filez = new List<string>(files);
                 filez.Sort();
@@ -211,8 +258,11 @@ namespace AlfaPlayer2
             if (reader != null)
             {
                 reader.Close();
-                reader.Dispose();
+                //reader.Dispose();
             }
+
+
+
 
             var ft = DetectFileType(fn);
             if (ft == FileType.None)
@@ -223,34 +273,140 @@ namespace AlfaPlayer2
             tag = TagLib.File.Create(fn);
             try
             {
-                switch (ft)
-                {
-                    case FileType.MP3:
-                        reader = new Mp3FileReader(fn);
-                        break;
 
-                    case FileType.FLAC:
-                        reader = new NAudio.Flac.FlacReader(fn);
-                        break;
+                reader = new AudioFileReader(fn);
 
-                    case FileType.WMA:
-                        reader = new WMAFileReader(fn);
-                        break;
-                }
+                var aggregator = new SampleAggregator(reader, 256);
+                aggregator.NotificationCount = reader.WaveFormat.SampleRate / 10;
+                aggregator.PerformFFT = true;
+                aggregator.FftCalculated += Aggregator_FftCalculated;
+
+
+                //sampleChannel = new SampleChannel(reader, true);
+                //sampleChannel.PreVolumeMeter += SampleChannel_PreVolumeMeter;
+                //var postVolumeMeter = new MeteringSampleProvider(sampleChannel);
+                //postVolumeMeter.StreamVolume += PostVolumeMeter_StreamVolume;
+                //postVolumeMeter.SamplesPerNotification = 64;
+                //Console.WriteLine(postVolumeMeter.SamplesPerNotification);
+                //switch (ft)
+                //{
+                //    case FileType.MP3:
+                //        reader = new Mp3FileReader(fn);
+                //        break;
+                //    case FileType.FLAC:
+                //        reader = new NAudio.Flac.FlacReader(fn);
+                //        break;
+                //    case FileType.WMA:
+                //        reader = new WMAFileReader(fn);
+                //        break;
+                //}
+
                 reader.CurrentTime = TimeSpan.FromSeconds(pos);
+
                 lastFile = Path.GetFullPath(fn);
                 listBoxFilePanel.SelectedItem = Path.GetFileName(fn);
                 Console.WriteLine("reader.BlockAlign {0}", reader.BlockAlign);
                 if (ft != FileType.None)
                 {
+
+                    //waveViewer1.WaveStream = reader2;
+
                     waveOut = new WaveOut(); // or WaveOutEvent()
-                    waveOut.Init(reader);
+                    waveOut.Init(aggregator);
                     waveOut.Play();
+
+
                     SaveSettings();
                 }
             }
             catch { }
         }
+
+        private void Aggregator_FftCalculated(object sender, FftEventArgs e)
+        {
+            if (!isSpectrumOn)
+            {
+                return;
+            }
+
+            NAudio.Dsp.Complex[] result = e.Result;
+
+            if (pictureBox1.IsDisposed)
+            {
+                return;
+            }
+            if (pb1Graphics == null)
+            {
+                bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+                pb1Graphics = pictureBox1.CreateGraphics();
+                pb1Graphics = Graphics.FromImage(bm);
+            }
+            int w = pictureBox1.Width;
+            int h = pictureBox1.Height;
+            float f = 10f;
+            pb1Graphics.Clear(Color.Transparent);
+
+            float pz0 = 0, pz1 = 0;
+
+            for (int i = 0; i < result.Length / 2; i++)
+            {
+                var x0 = result[i].X;
+                var y0 = result[i].Y;
+                var z0 = f * w * (float)Math.Sqrt(x0 * x0 + y0 * y0);
+                var x1 = result[result.Length - i - 1].X;
+                var y1 = result[result.Length - i - 1].Y;
+                var z1 = f * w * (float)Math.Sqrt(x1 * x1 + y1 * y1);
+
+                pb1Graphics.DrawLine(p1, 2 * i, h / 2 - 1, 2 * i, h / 2 - 1 + z0);
+                pb1Graphics.DrawLine(p2, 2 * i, h / 2 + 1, 2 * i, h / 2 + 1 - z1);
+                pb1Graphics.DrawLine(pl1, 2 * i - 1, h / 2 - 1 + pz0, 2 * i + 1, h / 2 - 1 + z0);
+                pb1Graphics.DrawLine(pl2, 2 * i - 1, h / 2 + 2 - pz1, 2 * i + 1, h / 2 + 2 - z1);
+
+                pz0 = z0;
+                pz1 = z1;
+
+            }
+
+            pictureBox1.Image = bm;
+
+        }
+        Pen pl1 = new Pen(Color.Red, 2);
+        Pen p1 = new Pen(Color.DarkRed, 2);
+        Pen pl2 = new Pen(Color.Lime, 2);
+        Pen p2 = new Pen(Color.DarkGreen, 2);
+
+        Graphics pb1Graphics;
+        Bitmap bm;
+        //private void PostVolumeMeter_StreamVolume(object sender, StreamVolumeEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (pictureBox1.IsDisposed)
+        //        {
+        //            return;
+        //        }
+        //        if (pb1Graphics == null)
+        //        {
+        //            bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+        //            pb1Graphics = pictureBox1.CreateGraphics();
+        //            pb1Graphics = Graphics.FromImage(bm);
+        //        }
+
+        //        pb1Graphics.Clear(Color.Black);
+        //        pb1Graphics.FillRectangle(Brushes.Red, pictureBox1.Width / 4 - 5, pictureBox1.Height - e.MaxSampleValues[0] * pictureBox1.Height, pictureBox1.Width / 4, 2 * pictureBox1.Height);
+        //        pb1Graphics.FillRectangle(Brushes.Red, pictureBox1.Width / 2 + 5, pictureBox1.Height - e.MaxSampleValues[1] * pictureBox1.Height, pictureBox1.Width / 4, 2 * pictureBox1.Height);
+        //        pictureBox1.Image = bm;
+        //    }
+        //    finally { }
+        //}
+
+        //private void SampleChannel_PreVolumeMeter(object sender, StreamVolumeEventArgs e)
+        //{
+        //}
+
+        //SampleChannel sampleChannel;
+
+
         private void SeekForward()
         {
             if (reader != null)
@@ -353,6 +509,11 @@ namespace AlfaPlayer2
                 OpenFile(lastFile, lastFilePos);
                 SeekToSecond(lastFilePos);
             }
+            else
+            {
+                ChangeFolder(Properties.Settings.Default.RootFolder);
+            }
+
             listBoxFilePanel.Select();
             timerPlayer.Enabled = true;
 
@@ -403,7 +564,7 @@ namespace AlfaPlayer2
                 listBoxFilePanel.DataSource = dirs;
                 listBoxFilePanel.Tag = folder;
 
-                SetFolderLabel(folder);
+                SetFolderLabel(folder, files.Count);
 
 
                 if (!string.IsNullOrEmpty(sourceFolderName))
@@ -424,19 +585,45 @@ namespace AlfaPlayer2
             }
         }
 
-        private void SetFolderLabel(string folder)
+        private void SetFolderLabel(string folder, int? itemsCount = null)
         {
+            label1.Text = groupBox1.Text = string.Format("{0} - ({1})", folder, itemsCount);
             groupBox1.Tag = folder;
-            int max = 30;
-            if (folder.Length > max)
+            return;
+            //int max = 40;
+            //if (folder.Length > max)
+            //{
+            //    int dif = folder.Length - max;
+            //    Console.WriteLine("{0}  {1} {2}", folder.Length, max, dif);
+            //    //folder = folder.Substring(0, folder.Length / 2 - dif / 2) + "..." + folder.Substring(folder.Length / 2 + dif / 2);
+            //    folder = "..." + folder.Reverse().Substring(0, max).Reverse();
+            //}
+            //label1.Text = groupBox1.Text = folder;
+        }
+
+        void OpenFileOrDirectory()
+        {
+            var dir = groupBox1.Tag.ToString();
+            var sel = listBoxFilePanel.SelectedItem.ToString();
+
+            if (sel.StartsWith(":"))
             {
-                int dif = folder.Length - max;
-                Console.WriteLine("{0}  {1} {2}", folder.Length, max, dif);
-                //folder = folder.Substring(0, folder.Length / 2 - dif / 2) + "..." + folder.Substring(folder.Length / 2 + dif / 2);
-                folder = "..." + folder.Reverse().Substring(0, max).Reverse();
+                var newDir = dir + Path.DirectorySeparatorChar + sel.Substring(1);
+                if (Directory.Exists(newDir))
+                {
+                    DirectoryInfo di = new DirectoryInfo(newDir);
+                    var rootFolder = Properties.Settings.Default.RootFolder;
+                    if (di.FullName.Contains(rootFolder))
+                    {
+                        ChangeFolder(newDir, new DirectoryInfo(dir).Name);
+                    }
+                }
+            }
+            else
+            {
+                OpenFile(dir + Path.DirectorySeparatorChar + listBoxFilePanel.SelectedItem.ToString());
             }
 
-            groupBox1.Text = folder;
         }
 
         private void listBoxFilePanel_KeyDown(object sender, KeyEventArgs e)
@@ -444,16 +631,7 @@ namespace AlfaPlayer2
 
             if (e.KeyCode == Keys.Return)
             {
-                var dir = groupBox1.Tag.ToString();
-                var sel = listBoxFilePanel.SelectedItem.ToString();
-                if (sel.StartsWith(":"))
-                {
-                    ChangeFolder(dir + Path.DirectorySeparatorChar + sel.Substring(1), new DirectoryInfo(dir).Name);
-                }
-                else
-                {
-                    OpenFile(dir + Path.DirectorySeparatorChar + listBoxFilePanel.SelectedItem.ToString());
-                }
+                OpenFileOrDirectory();
             }
             else if (e.KeyCode == Keys.Right || e.KeyCode == Keys.Left/* || e.KeyCode == Keys.PageUp || e.KeyCode == Keys.PageDown*/)
             {
@@ -655,11 +833,45 @@ namespace AlfaPlayer2
             }
         }
 
+
+        private TagLib.File lastTag;
+
+        private void SetTagImage()
+        {
+            if (tag != null)
+            {
+                if (tag.Tag.Pictures.Length > 0)
+                {
+                    MemoryStream mStream = new MemoryStream();
+                    byte[] pData = tag.Tag.Pictures[0].Data.Data;
+                    mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
+                    Bitmap bm = new Bitmap(mStream, false);
+                    mStream.Dispose();
+                    pictureBox1.Image = bm;
+                }
+                else
+                {
+                    pictureBox1.Image = pictureBox1.InitialImage;
+                }
+            }
+            else
+            {
+                pictureBox1.Image = pictureBox1.InitialImage;
+            }
+
+        }
+
         private void timerPlayer_Tick(object sender, EventArgs e)
         {
             if (reader != null)
             {
+
+
+
                 //Console.WriteLine(reader.Position);
+
+                //FastFourierTransform.FFT(true,2,reader.)
+
 
                 textProgressBar.Value = (int)(textProgressBar.MaximumValue * reader.Position / reader.Length);
                 lastFilePos = reader.CurrentTime.TotalSeconds;
@@ -670,40 +882,51 @@ namespace AlfaPlayer2
                 textProgressBar.ProgressText = string.Format("{0:00}:{1:00} / {2:00}:{3:00}", (int)ct / 60, ct % 60, (int)tt / 60, tt % 60);
                 if (tag != null)
                 {
-                    string tit = "";
-                    if (!string.IsNullOrEmpty(tag.Tag.Title))
+                    if (lastTag != tag)
                     {
-                        if (tag.Tag.Artists.Length > 0)
+                        lastTag = tag;
+                        //Console.WriteLine(tag.Tag.Pictures[0]);
+                        SetTagImage();
+
+                        string tit = "";
+                        if (!string.IsNullOrEmpty(tag.Tag.Title))
                         {
-                            tit = string.Format("{0} - {1}", tag.Tag.Artists[0], tag.Tag.Title);
+                            if (tag.Tag.Artists.Length > 0)
+                            {
+                                tit = string.Format("{0} - {1}", tag.Tag.Artists[0], tag.Tag.Title);
+                            }
+                            else
+                            if (tag.Tag.AlbumArtists.Length > 0)
+                            {
+                                tit = string.Format("{0} - {1}", tag.Tag.AlbumArtists[0], tag.Tag.Title);
+                            }
+                            else
+                            {
+                                tit = tag.Tag.Title;
+                            }
+
                         }
                         else
-                        if (tag.Tag.AlbumArtists.Length > 0)
                         {
-                            tit = string.Format("{0} - {1}", tag.Tag.AlbumArtists[0], tag.Tag.Title);
-                        }
-                        else
-                        {
-                            tit = tag.Tag.Title;
+                            tit = string.Format("{0}", Path.GetFileName(tag.Name));
                         }
 
-                    }
-                    else
-                    {
-                        tit = string.Format("{0}", Path.GetFileName(tag.Name));
-                    }
+                        if (labelSongTitle.Text != tit)
+                        {
+                            labelSongTitle.Text = tit;
+                        }
 
-                    if (labelSongTitle.Text != tit)
-                    {
-                        labelSongTitle.Text = tit;
-                    }
-
-                    if (labelSongInfo.Text != tag.Tag.Album)
-                    {
-                        labelSongInfo.Text = tag.Tag.Album;
+                        if (labelSongInfo.Text != tag.Tag.Album)
+                        {
+                            labelSongInfo.Text = tag.Tag.Album;
+                        }
                     }
 
 
+                }
+                else
+                {
+                    pictureBox1.Image = pictureBox1.InitialImage;
                 }
                 if (waveOut != null)
                 {
@@ -804,6 +1027,81 @@ namespace AlfaPlayer2
             SaveSettings();
         }
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            return;
 
+            //if (sampleChannel != null)
+            //{
+            //    int xx = 128;
+            //    float[] bb = new float[xx];
+
+
+            //    var gg = pictureBox1.CreateGraphics();
+            //    gg.Clear(Color.Black);
+            //    sampleChannel.Read(bb, 0, xx);
+            //    for (int i = 0; i < bb.Length; i++)
+            //    {
+
+            //        gg.DrawLine(Pens.Red, i, pictureBox1.Height / 2 + bb[i], i + 1, pictureBox1.Height / 2 + bb[i]);
+            //        //Console.Write("{0} ", bb[i]);if (i % 8 == 0)Console.WriteLine();
+            //    }
+            //}
+
+        }
+
+        bool isSpectrumOn = false;
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            isSpectrumOn = !isSpectrumOn;
+            if (!isSpectrumOn)
+            {
+                SetTagImage();
+            }
+        }
+
+        private void listBoxFilePanel_DoubleClick(object sender, EventArgs e)
+        {
+            OpenFileOrDirectory();
+        }
+
+
+
+        #region file list drag
+        int startY = 0;
+
+        private void listBoxFilePanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            startY = e.Y;
+            Console.WriteLine(e.Y);
+        }
+
+        private void listBoxFilePanel_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void listBoxFilePanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (Math.Abs(e.Y - startY) > 50)
+            {
+                if (e.Y > startY)
+                {
+                    if (listBoxFilePanel.SelectedIndex < listBoxFilePanel.Items.Count - 1)
+                    {
+                        listBoxFilePanel.SelectedIndex = Math.Min(listBoxFilePanel.Items.Count - 1, listBoxFilePanel.SelectedIndex + (int)(listBoxFilePanel.Height / listBoxFilePanel.ItemHeight));
+                    }
+                }
+                else
+                {
+                    if (listBoxFilePanel.SelectedIndex > 0)
+                    {
+                        listBoxFilePanel.SelectedIndex = Math.Max(0, listBoxFilePanel.SelectedIndex - (int)(listBoxFilePanel.Height / listBoxFilePanel.ItemHeight));
+                    }
+                }
+            }
+        }
+
+        #endregion file list drag
     }
 }

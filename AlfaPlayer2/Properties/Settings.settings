@@ -27,7 +27,7 @@
       <Value Profile="(Default)">Cyan</Value>
     </Setting>
     <Setting Name="FilePanelTextColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">WindowText</Value>
+      <Value Profile="(Default)">Teal</Value>
     </Setting>
     <Setting Name="FilePanelFolderTextColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Teal</Value>
@@ -58,6 +58,9 @@
     </Setting>
     <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="RootFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

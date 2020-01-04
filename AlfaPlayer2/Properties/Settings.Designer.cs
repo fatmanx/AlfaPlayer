@@ -121,7 +121,7 @@ namespace AlfaPlayer2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("WindowText")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Teal")]
         public global::System.Drawing.Color FilePanelTextColor {
             get {
                 return ((global::System.Drawing.Color)(this["FilePanelTextColor"]));
@@ -248,6 +248,18 @@ namespace AlfaPlayer2.Properties {
             }
             set {
                 this["UpgradeRequired"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RootFolder {
+            get {
+                return ((string)(this["RootFolder"]));
+            }
+            set {
+                this["RootFolder"] = value;
             }
         }
     }

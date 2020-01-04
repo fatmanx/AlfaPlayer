@@ -117,7 +117,7 @@ namespace AlfaPlayer2
                 }
 
             }
-            e.Graphics.DrawString(text, Font, foreBrush, lastx, y + Padding.Top);
+            e.Graphics.DrawString(text, Font, foreBrush, lastx + PaddingLeft, y + PaddingTop);
 
         }
 
@@ -138,5 +138,9 @@ namespace AlfaPlayer2
             lastx = 0;
             this.Refresh();
         }
+        public int PaddingTop { get; set; }
+        public int PaddingBottom { get; set; }
+        public int PaddingLeft { get; set; }
+        public int PaddingRight { get; set; }
     }
 }

@@ -27,42 +27,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutBox));
-            this.logoPictureBox = new System.Windows.Forms.PictureBox();
             this.labelProductName = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
-            this.labelCopyright = new System.Windows.Forms.Label();
-            this.labelCompanyName = new System.Windows.Forms.Label();
-            this.textBoxDescription = new System.Windows.Forms.TextBox();
             this.okButton = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.scrollLabelRootFolder = new AlfaPlayer2.ScrollLabel();
             this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // logoPictureBox
-            // 
-            this.logoPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("logoPictureBox.Image")));
-            this.logoPictureBox.Location = new System.Drawing.Point(2, 2);
-            this.logoPictureBox.Name = "logoPictureBox";
-            this.logoPictureBox.Size = new System.Drawing.Size(252, 576);
-            this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.logoPictureBox.TabIndex = 12;
-            this.logoPictureBox.TabStop = false;
             // 
             // labelProductName
             // 
             this.labelProductName.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "TitleTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.labelProductName.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelProductName.Font = new System.Drawing.Font("White Rabbit", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelProductName.Font = new System.Drawing.Font("Exo 2", 36F);
             this.labelProductName.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.TitleTextColor;
             this.labelProductName.Location = new System.Drawing.Point(2, 2);
             this.labelProductName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.labelProductName.Name = "labelProductName";
-            this.labelProductName.Size = new System.Drawing.Size(518, 48);
+            this.labelProductName.Size = new System.Drawing.Size(776, 48);
             this.labelProductName.TabIndex = 19;
             this.labelProductName.Text = "Product Name";
             this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -71,63 +58,15 @@
             // 
             this.labelVersion.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "FilePanelTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.labelVersion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelVersion.Font = new System.Drawing.Font("White Rabbit", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelVersion.Font = new System.Drawing.Font("Exo 2", 27.75F);
             this.labelVersion.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelTextColor;
             this.labelVersion.Location = new System.Drawing.Point(2, 50);
             this.labelVersion.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(518, 48);
+            this.labelVersion.Size = new System.Drawing.Size(776, 48);
             this.labelVersion.TabIndex = 0;
             this.labelVersion.Text = "Version";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // labelCopyright
-            // 
-            this.labelCopyright.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "FilePanelTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.labelCopyright.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelCopyright.Font = new System.Drawing.Font("White Rabbit", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCopyright.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelTextColor;
-            this.labelCopyright.Location = new System.Drawing.Point(2, 146);
-            this.labelCopyright.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.labelCopyright.Name = "labelCopyright";
-            this.labelCopyright.Size = new System.Drawing.Size(518, 48);
-            this.labelCopyright.TabIndex = 21;
-            this.labelCopyright.Text = "Copyright";
-            this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // labelCompanyName
-            // 
-            this.labelCompanyName.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "FilePanelTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.labelCompanyName.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelCompanyName.Font = new System.Drawing.Font("White Rabbit", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCompanyName.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelTextColor;
-            this.labelCompanyName.Location = new System.Drawing.Point(2, 98);
-            this.labelCompanyName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.labelCompanyName.Name = "labelCompanyName";
-            this.labelCompanyName.Size = new System.Drawing.Size(518, 48);
-            this.labelCompanyName.TabIndex = 22;
-            this.labelCompanyName.Text = "Company Name";
-            this.labelCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // textBoxDescription
-            // 
-            this.textBoxDescription.BackColor = global::AlfaPlayer2.Properties.Settings.Default.AboutBoxBackColor;
-            this.textBoxDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxDescription.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "FilePanelTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textBoxDescription.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "AboutBoxBackColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxDescription.Font = new System.Drawing.Font("White Rabbit", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDescription.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelTextColor;
-            this.textBoxDescription.Location = new System.Drawing.Point(2, 194);
-            this.textBoxDescription.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
-            this.textBoxDescription.Multiline = true;
-            this.textBoxDescription.Name = "textBoxDescription";
-            this.textBoxDescription.ReadOnly = true;
-            this.textBoxDescription.Size = new System.Drawing.Size(518, 334);
-            this.textBoxDescription.TabIndex = 23;
-            this.textBoxDescription.TabStop = false;
-            this.textBoxDescription.Text = "Description";
-            this.textBoxDescription.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // okButton
             // 
@@ -135,41 +74,83 @@
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.okButton.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.okButton.Font = new System.Drawing.Font("White Rabbit", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.okButton.Font = new System.Drawing.Font("Exo 2", 27.75F);
             this.okButton.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelTextColor;
-            this.okButton.Location = new System.Drawing.Point(2, 528);
+            this.okButton.Location = new System.Drawing.Point(2, 498);
             this.okButton.Name = "okButton";
             this.okButton.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
-            this.okButton.Size = new System.Drawing.Size(518, 50);
+            this.okButton.Size = new System.Drawing.Size(776, 80);
             this.okButton.TabIndex = 24;
             this.okButton.Text = "&OK";
-            // 
-            // panel1
-            // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.logoPictureBox);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(9, 9);
-            this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(2);
-            this.panel1.Size = new System.Drawing.Size(258, 582);
-            this.panel1.TabIndex = 25;
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.textBoxDescription);
-            this.panel2.Controls.Add(this.labelCopyright);
-            this.panel2.Controls.Add(this.labelCompanyName);
+            this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.labelVersion);
             this.panel2.Controls.Add(this.okButton);
             this.panel2.Controls.Add(this.labelProductName);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(267, 9);
+            this.panel2.Location = new System.Drawing.Point(9, 9);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(2);
-            this.panel2.Size = new System.Drawing.Size(524, 582);
+            this.panel2.Size = new System.Drawing.Size(782, 582);
             this.panel2.TabIndex = 26;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.scrollLabelRootFolder);
+            this.panel3.Controls.Add(this.button1);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(2, 98);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(776, 61);
+            this.panel3.TabIndex = 26;
+            // 
+            // button1
+            // 
+            this.button1.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "FilePanelTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.button1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Exo 2", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelTextColor;
+            this.button1.Location = new System.Drawing.Point(686, 0);
+            this.button1.Name = "button1";
+            this.button1.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.button1.Size = new System.Drawing.Size(90, 61);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "...";
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.CheckFileExists = false;
+            this.openFileDialog1.Filter = "Any|*.*";
+            this.openFileDialog1.RestoreDirectory = true;
+            this.openFileDialog1.ShowReadOnly = true;
+            this.openFileDialog1.SupportMultiDottedExtensions = true;
+            // 
+            // folderBrowserDialog1
+            // 
+            this.folderBrowserDialog1.ShowNewFolderButton = false;
+            // 
+            // scrollLabelRootFolder
+            // 
+            this.scrollLabelRootFolder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scrollLabelRootFolder.Font = new System.Drawing.Font("Exo 2 Semi Bold", 36F, System.Drawing.FontStyle.Bold);
+            this.scrollLabelRootFolder.ForeColor = System.Drawing.Color.Teal;
+            this.scrollLabelRootFolder.Location = new System.Drawing.Point(0, 0);
+            this.scrollLabelRootFolder.Name = "scrollLabelRootFolder";
+            this.scrollLabelRootFolder.PaddingBottom = 0;
+            this.scrollLabelRootFolder.PaddingLeft = 0;
+            this.scrollLabelRootFolder.PaddingRight = 0;
+            this.scrollLabelRootFolder.PaddingTop = 0;
+            this.scrollLabelRootFolder.PauseScrollRefreshMilliseconds = 1000F;
+            this.scrollLabelRootFolder.Size = new System.Drawing.Size(686, 61);
+            this.scrollLabelRootFolder.Step = -1F;
+            this.scrollLabelRootFolder.TabIndex = 0;
+            this.scrollLabelRootFolder.Text = "ROOT";
+            this.scrollLabelRootFolder.TimeoutSeconds = 0.001D;
             // 
             // AboutBox
             // 
@@ -179,7 +160,6 @@
             this.BackColor = global::AlfaPlayer2.Properties.Settings.Default.AboutBoxBackColor;
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
             this.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::AlfaPlayer2.Properties.Settings.Default, "AboutBoxBackColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
@@ -194,24 +174,21 @@
             this.Load += new System.EventHandler(this.AboutBox_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AboutBox_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AboutBox_KeyPress);
-            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.PictureBox logoPictureBox;
         private System.Windows.Forms.Label labelProductName;
         private System.Windows.Forms.Label labelVersion;
-        private System.Windows.Forms.Label labelCopyright;
-        private System.Windows.Forms.Label labelCompanyName;
-        private System.Windows.Forms.TextBox textBoxDescription;
         private System.Windows.Forms.Button okButton;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.Panel panel3;
+        private ScrollLabel scrollLabelRootFolder;
+        private System.Windows.Forms.Button button1;
     }
 }

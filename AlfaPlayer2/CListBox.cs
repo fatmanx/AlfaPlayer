@@ -41,7 +41,7 @@ namespace AlfaPlayer
 
 
 
-        internal Brush selectedItemForeBrush;
+        internal SolidBrush selectedItemForeBrush;
         Color selectedItemForeColor = Color.Red;
         public Color SelectedItemForeColor
         {
@@ -75,6 +75,24 @@ namespace AlfaPlayer
 
         }
 
+        internal SolidBrush foreBrush = new SolidBrush(Color.Black);
+        public override Color ForeColor
+        {
+            get
+            {
+                return base.ForeColor;
+            }
 
+            set
+            {
+                base.ForeColor = value;
+                foreBrush = new SolidBrush(value);
+            }
+        }
+
+        public int PaddingTop { get; set; }
+        public int PaddingBottom { get; set; }
+        public int PaddingLeft { get; set; }
+        public int PaddingRight { get; set; }
     }
 }

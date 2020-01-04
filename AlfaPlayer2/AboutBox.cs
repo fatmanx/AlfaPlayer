@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -16,10 +17,8 @@ namespace AlfaPlayer2
             this.Text = String.Format("About {0}", AssemblyTitle);
             this.labelProductName.Text = AssemblyProduct;
             this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
-            this.labelCopyright.Text = AssemblyCopyright;
-            this.labelCompanyName.Text = AssemblyCompany;
-            this.textBoxDescription.Text = AssemblyDescription;
             Console.WriteLine(">>>>>>>>>>>>> {0} {1}", AssemblyVersion, String.Format("Version {0}", AssemblyVersion));
+            scrollLabelRootFolder.Text = Properties.Settings.Default.RootFolder;
 
         }
 
@@ -124,6 +123,26 @@ namespace AlfaPlayer2
             {
                 this.Size = ParentForm.Size;
                 this.Location = ParentForm.Location;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+
+
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            dialog.InitialDirectory = scrollLabelRootFolder.Text;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                Properties.Settings.Default.RootFolder = scrollLabelRootFolder.Text = dialog.FileName;
+                Properties.Settings.Default.Save();
             }
         }
     }
