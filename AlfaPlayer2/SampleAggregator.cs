@@ -61,7 +61,7 @@ namespace AlfaPlayer2
         {
             if (PerformFFT && FftCalculated != null)
             {
-                fftBuffer[fftPos].X = (float)(value * FastFourierTransform.HannWindow(fftPos, fftLength));
+                fftBuffer[fftPos].X = (float)(value * FastFourierTransform.BlackmannHarrisWindow(fftPos, fftLength));
                 fftBuffer[fftPos].Y = 0;
                 signalBuffer[fftPos] = value;
                 fftPos++;

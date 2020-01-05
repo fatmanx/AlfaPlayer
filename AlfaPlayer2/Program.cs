@@ -31,9 +31,9 @@ namespace AlfaPlayer2
                 //AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
                 Application.Run(new MainForm());
             }
-            catch
+            catch(Exception ex)
             {
-
+                Console.WriteLine(ex);
             }
         }
 

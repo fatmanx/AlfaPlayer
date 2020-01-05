@@ -32,12 +32,15 @@
             this.okButton = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.scrollLabelRootFolder = new AlfaPlayer2.ScrollLabel();
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.scrollLabelRootFolder = new AlfaPlayer2.ScrollLabel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelProductName
@@ -86,6 +89,7 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.panel1);
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.labelVersion);
             this.panel2.Controls.Add(this.okButton);
@@ -106,6 +110,24 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(776, 61);
             this.panel3.TabIndex = 26;
+            // 
+            // scrollLabelRootFolder
+            // 
+            this.scrollLabelRootFolder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scrollLabelRootFolder.Font = new System.Drawing.Font("Exo 2 Semi Bold", 36F, System.Drawing.FontStyle.Bold);
+            this.scrollLabelRootFolder.ForeColor = System.Drawing.Color.Teal;
+            this.scrollLabelRootFolder.Location = new System.Drawing.Point(0, 0);
+            this.scrollLabelRootFolder.Name = "scrollLabelRootFolder";
+            this.scrollLabelRootFolder.PaddingBottom = 0;
+            this.scrollLabelRootFolder.PaddingLeft = 0;
+            this.scrollLabelRootFolder.PaddingRight = 0;
+            this.scrollLabelRootFolder.PaddingTop = 0;
+            this.scrollLabelRootFolder.PauseScrollRefreshMilliseconds = 1000F;
+            this.scrollLabelRootFolder.Size = new System.Drawing.Size(686, 61);
+            this.scrollLabelRootFolder.Step = -1F;
+            this.scrollLabelRootFolder.TabIndex = 0;
+            this.scrollLabelRootFolder.Text = "ROOT";
+            this.scrollLabelRootFolder.TimeoutSeconds = 0.001D;
             // 
             // button1
             // 
@@ -134,23 +156,29 @@
             // 
             this.folderBrowserDialog1.ShowNewFolderButton = false;
             // 
-            // scrollLabelRootFolder
+            // panel1
             // 
-            this.scrollLabelRootFolder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scrollLabelRootFolder.Font = new System.Drawing.Font("Exo 2 Semi Bold", 36F, System.Drawing.FontStyle.Bold);
-            this.scrollLabelRootFolder.ForeColor = System.Drawing.Color.Teal;
-            this.scrollLabelRootFolder.Location = new System.Drawing.Point(0, 0);
-            this.scrollLabelRootFolder.Name = "scrollLabelRootFolder";
-            this.scrollLabelRootFolder.PaddingBottom = 0;
-            this.scrollLabelRootFolder.PaddingLeft = 0;
-            this.scrollLabelRootFolder.PaddingRight = 0;
-            this.scrollLabelRootFolder.PaddingTop = 0;
-            this.scrollLabelRootFolder.PauseScrollRefreshMilliseconds = 1000F;
-            this.scrollLabelRootFolder.Size = new System.Drawing.Size(686, 61);
-            this.scrollLabelRootFolder.Step = -1F;
-            this.scrollLabelRootFolder.TabIndex = 0;
-            this.scrollLabelRootFolder.Text = "ROOT";
-            this.scrollLabelRootFolder.TimeoutSeconds = 0.001D;
+            this.panel1.Controls.Add(this.button2);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(2, 159);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(776, 100);
+            this.panel1.TabIndex = 27;
+            // 
+            // button2
+            // 
+            this.button2.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::AlfaPlayer2.Properties.Settings.Default, "FilePanelTextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.button2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Exo 2", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.FilePanelTextColor;
+            this.button2.Location = new System.Drawing.Point(389, 0);
+            this.button2.Name = "button2";
+            this.button2.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.button2.Size = new System.Drawing.Size(387, 100);
+            this.button2.TabIndex = 26;
+            this.button2.Text = "Reload lib";
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // AboutBox
             // 
@@ -176,6 +204,7 @@
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AboutBox_KeyPress);
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -190,5 +219,7 @@
         private System.Windows.Forms.Panel panel3;
         private ScrollLabel scrollLabelRootFolder;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button2;
     }
 }

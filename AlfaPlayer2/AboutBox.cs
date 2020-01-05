@@ -145,5 +145,10 @@ namespace AlfaPlayer2
                 Properties.Settings.Default.Save();
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Library.Instance.RefreshLibrary();
+        }
     }
 }

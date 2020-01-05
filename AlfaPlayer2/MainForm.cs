@@ -1,4 +1,6 @@
-﻿using NAudio.Dsp;
+﻿
+
+using NAudio.Dsp;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using NAudio.WindowsMediaFormat;
@@ -188,7 +190,7 @@ namespace AlfaPlayer2
                 var fi = new FileInfo(cDir + Path.DirectorySeparatorChar + cFile);
 
 
-                var files = getFiles(fi.Directory.Parent.Parent.Parent.FullName, extensionFilter);
+                var files = Library.Instance.GetFiles();
                 List<string> filez = new List<string>(files);
                 filez.Sort();
                 if (isReverse)
@@ -241,6 +243,7 @@ namespace AlfaPlayer2
         }
 
 
+
         private AudioFileReader reader;
         private void OpenFile(string fn, double pos = 0)
         {
@@ -278,11 +281,11 @@ namespace AlfaPlayer2
             {
 
                 reader = new AudioFileReader(fn);
-                var aggregator = new SampleAggregator(reader, 256);
-                aggregator .NotificationCount = reader.WaveFormat.SampleRate / 10;
-                aggregator .PerformFFT = true;
-                aggregator .FftCalculated += Aggregator_FftCalculated;
-                
+                var aggregator = new SampleAggregator(reader, FFT_POINTS);
+                aggregator.NotificationCount = reader.WaveFormat.SampleRate / 10;
+                aggregator.PerformFFT = true;
+                aggregator.FftCalculated += Aggregator_FftCalculated;
+
 
                 //sampleChannel = new SampleChannel(reader, true);
                 //sampleChannel.PreVolumeMeter += SampleChannel_PreVolumeMeter;
@@ -314,7 +317,7 @@ namespace AlfaPlayer2
                     //waveViewer1.WaveStream = reader2;
 
                     waveOut = new WaveOut(); // or WaveOutEvent()
-                    waveOut.Init(aggregator,true);
+                    waveOut.Init(aggregator, true);
                     waveOut.Play();
 
 
@@ -328,6 +331,7 @@ namespace AlfaPlayer2
             }
         }
 
+
         private void Aggregator_FftCalculated(object sender, FftEventArgs e)
         {
             if (!isSpectrumOn)
@@ -335,23 +339,25 @@ namespace AlfaPlayer2
                 return;
             }
 
+            setFFTRes(e.Result);
+            return;
             NAudio.Dsp.Complex[] result = e.Result;
 
             if (pictureBox1.IsDisposed)
             {
                 return;
             }
-            if (pb1Graphics == null)
+            if (ggg == null)
             {
                 bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-                pb1Graphics = pictureBox1.CreateGraphics();
-                pb1Graphics = Graphics.FromImage(bm);
+                ggg = pictureBox1.CreateGraphics();
+                ggg = Graphics.FromImage(bm);
 
             }
             int w = pictureBox1.Width;
             int h = pictureBox1.Height;
             float f = 10f;
-            pb1Graphics.Clear(Color.Transparent);
+            ggg.Clear(Color.Transparent);
             //pb1Graphics.DrawImage(cImage, 0, 0,w,h);
 
             float pz0 = 0, pz1 = 0;
@@ -365,10 +371,10 @@ namespace AlfaPlayer2
                 var y1 = result[result.Length - i - 1].Y;
                 var z1 = f * w * (float)Math.Sqrt(x1 * x1 + y1 * y1);
 
-                pb1Graphics.DrawLine(p1, 2 * i, h / 2 - 1, 2 * i, h / 2 - 1 + z0);
-                pb1Graphics.DrawLine(p2, 2 * i, h / 2 + 1, 2 * i, h / 2 + 1 - z1);
-                pb1Graphics.DrawLine(pl1, 2 * i - 1, h / 2 - 1 + pz0, 2 * i + 1, h / 2 - 1 + z0);
-                pb1Graphics.DrawLine(pl2, 2 * i - 1, h / 2 + 2 - pz1, 2 * i + 1, h / 2 + 2 - z1);
+                ggg.DrawLine(p1, 2 * i, h / 2 - 1, 2 * i, h / 2 - 1 + z0);
+                ggg.DrawLine(p2, 2 * i, h / 2 + 1, 2 * i, h / 2 + 1 - z1);
+                ggg.DrawLine(pl1, 2 * i - 1, h / 2 - 1 + pz0, 2 * i + 1, h / 2 - 1 + z0);
+                ggg.DrawLine(pl2, 2 * i - 1, h / 2 + 2 - pz1, 2 * i + 1, h / 2 + 2 - z1);
 
                 pz0 = z0;
                 pz1 = z1;
@@ -383,7 +389,7 @@ namespace AlfaPlayer2
         Pen pl2 = new Pen(Color.Lime, 2);
         Pen p2 = new Pen(Color.DarkGreen, 2);
 
-        Graphics pb1Graphics;
+        Graphics ggg;
         Bitmap bm;
 
 
@@ -516,30 +522,17 @@ namespace AlfaPlayer2
 
         //string extensions = "*.mp3|*.wav|*.flac";
 
-        public string[] getFiles(string SourceFolder, string Filter, System.IO.SearchOption searchOption = SearchOption.AllDirectories)
-        {
-            // ArrayList will hold all file names
-            ArrayList alFiles = new ArrayList();
 
-            // Create an array of filter string
-            string[] MultipleFilters = Filter.Split('|');
 
-            // for each filter find mathing file names
-            foreach (string FileFilter in MultipleFilters)
-            {
-                // add found file names to array list
-                alFiles.AddRange(Directory.GetFiles(SourceFolder, FileFilter, searchOption));
-            }
-            alFiles.Sort();
 
-            // returns string array of relevant file names
-            return (string[])alFiles.ToArray(typeof(string));
-        }
-        string extensionFilter = "";
+
+
+        //string extensionFilter = "";
         private void MainForm_Load(object sender, EventArgs e)
         {
 
-            extensionFilter = "*" + string.Join("|*", extensions);
+            aboutBox = new AboutBox { ParentForm = this };
+            //extensionFilter = "*" + string.Join("|*", extensions);
             //Console.WriteLine("------------------------------------");
             //var di = new DirectoryInfo(".");
             //var files = getFiles(".", extensions, SearchOption.AllDirectories);
@@ -558,7 +551,9 @@ namespace AlfaPlayer2
             lastFile = Properties.Settings.Default.LastFile;
             lastFilePos = Properties.Settings.Default.LastFilePos;
             maxVolume = Properties.Settings.Default.MaxVolume;
+            
 
+            Library.Instance.RefreshLibrary();
             InitFilePanel();
             if (File.Exists(lastFile))
             {
@@ -579,10 +574,15 @@ namespace AlfaPlayer2
                 //TopMost = true;
 
             }
-            aboutBox = new AboutBox { ParentForm = this };
+
+            backgroundWorker1.RunWorkerAsync();
+            
 
 
         }
+
+
+
 
         private void InitFilePanel()
         {
@@ -600,7 +600,7 @@ namespace AlfaPlayer2
             }
         }
 
-        string[] extensions = { ".mp3", ".flac", ".wma", ".wav", ".aac" };
+        //string[] extensions = { ".mp3", ".flac", ".wma", ".wav", ".aac" };
 
         private void ChangeFolder(string folder, string sourceFolderName = null)
         {
@@ -613,7 +613,7 @@ namespace AlfaPlayer2
 
 
                 List<string> files = new List<string>(Directory.GetFiles(folder, "*.*")
-                    .Where(f => extensions.Contains(System.IO.Path.GetExtension(f).ToLower())).Select(f => { f = f.Substring(f.LastIndexOf(Path.DirectorySeparatorChar) + 1); return f; }).ToArray());
+                    .Where(f => Library.Instance.extensions.Contains(System.IO.Path.GetExtension(f).ToLower())).Select(f => { f = f.Substring(f.LastIndexOf(Path.DirectorySeparatorChar) + 1); return f; }).ToArray());
 
                 dirs.Insert(0, @":..");
                 dirs.AddRange(files);
@@ -848,6 +848,8 @@ namespace AlfaPlayer2
                 catch (Exception) { }
             }
         }
+
+
 
         private void PlayPause()
         {
@@ -1091,28 +1093,205 @@ namespace AlfaPlayer2
             SaveSettings();
         }
 
+        float[] lfd = new float[FFT_POINTS];
+        float[] cfd = new float[FFT_POINTS];
+        int fftStep = 0;
+        const int FFT_POINTS = 1024;
+
+        const int FFT_STEP_COUNT = 10;
         private void timer1_Tick(object sender, EventArgs e)
         {
-            return;
+            Draw2();
+        }
+        void Draw2()
+        {
+            if (!isSpectrumOn || waveOut.PlaybackState != PlaybackState.Playing)
+            {
+                return;
+            }
 
-            //if (sampleChannel != null)
-            //{
-            //    int xx = 128;
-            //    float[] bb = new float[xx];
+            for (int i = 0; i < FFT_POINTS; i++)
+            {
+                ccc[i] = (ccc[i] + nnn[i]) / 1.5f;
+            }
+
+            if (pictureBox1.IsDisposed)
+            {
+                return;
+            }
+            if (ggg == null)
+            {
+                bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+                ggg = pictureBox1.CreateGraphics();
+                ggg = Graphics.FromImage(bm);
+
+            }
+            int w = pictureBox1.Width;
+            int h = pictureBox1.Height;
+            int midh = h / 2;
+            float f = 3f;
+            ggg.Clear(Color.Transparent);
 
 
-            //    var gg = pictureBox1.CreateGraphics();
-            //    gg.Clear(Color.Black);
-            //    sampleChannel.Read(bb, 0, xx);
-            //    for (int i = 0; i < bb.Length; i++)
-            //    {
 
-            //        gg.DrawLine(Pens.Red, i, pictureBox1.Height / 2 + bb[i], i + 1, pictureBox1.Height / 2 + bb[i]);
-            //        //Console.Write("{0} ", bb[i]);if (i % 8 == 0)Console.WriteLine();
-            //    }
-            //}
+            float d = 1.5f;
+            List<PointF> pp0 = new List<PointF>();
+            List<PointF> pp1 = new List<PointF>();
+
+            //pp0.Add(new PointF(0, h / 2 + d));
+            //pp1.Add(new PointF(0, h / 2 - d));
+
+            for (int i = 0; i < FFT_POINTS / 2; i++)
+            {
+                int ii = i * 2;
+                int j = FFT_POINTS - i - 1;
+                Console.WriteLine("{0} {1}", i, j);
+                float c0y0 = f * ccc[i];
+                float c1y0 = -f * ccc[j];
+
+                pp0.Add(new PointF(ii, d + midh + c0y0));
+                pp1.Add(new PointF(ii, -d + midh + c1y0));
+
+            }
+
+            pp0.Add(new PointF(0, midh + d));
+            pp1.Add(new PointF(0, midh - d));
+
+            ggg.FillPolygon(Brushes.DarkRed, pp0.ToArray());
+            ggg.FillPolygon(Brushes.DarkGreen, pp1.ToArray());
+            ggg.DrawLines(Pens.Red, pp0.ToArray());
+            ggg.DrawLines(Pens.Green, pp1.ToArray());
+
+
+            pictureBox1.Image = bm;
 
         }
+
+        void Draw1()
+        {
+            if (!isSpectrumOn || waveOut.PlaybackState != PlaybackState.Playing)
+            {
+                return;
+            }
+
+            if (fftStep++ > FFT_STEP_COUNT)
+            {
+                fftStep = 0;
+            }
+            if (fftData.Count > 0)
+            {
+
+                if (fftData.Count > 100)
+                {
+                    for (int i = 0; i < 100; i++)
+                    {
+                        fftData.Dequeue();
+                    }
+                }
+
+                lfd = cfd;
+                cfd = fftData.Dequeue();
+                Console.WriteLine(fftData.Count);
+            }
+
+            float ss = (float)fftStep / FFT_STEP_COUNT;
+
+            if (pictureBox1.IsDisposed)
+            {
+                return;
+            }
+            if (ggg == null)
+            {
+                bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+                ggg = pictureBox1.CreateGraphics();
+                ggg = Graphics.FromImage(bm);
+
+            }
+            int w = pictureBox1.Width;
+            int h = pictureBox1.Height;
+            int midh = h / 2;
+            float f = 5f;
+            ggg.Clear(Color.Transparent);
+
+
+
+            float d = 1.5f;
+            List<PointF> pp0 = new List<PointF>();
+            List<PointF> pp1 = new List<PointF>();
+
+            //pp0.Add(new PointF(0, h / 2 + d));
+            //pp1.Add(new PointF(0, h / 2 - d));
+
+            for (int i = 1; i < FFT_POINTS / 2; i++)
+            {
+                int ii = i * 2;
+                int j = FFT_POINTS / 2 + i - 1;
+
+                float lfdi = lfd[i];
+                float cfdi = cfd[i];
+
+                float lfdj = lfd[j];
+                float cfdj = cfd[j];
+
+
+                float c0y0 = ss * f * lfdi + f * ss * (cfdi - lfdi);
+                float c1y0 = -ss * f * lfdj - f * ss * (cfdj - lfdj);
+
+                pp0.Add(new PointF(ii, d + midh + c0y0));
+                pp1.Add(new PointF(w - ii, -d + midh + c1y0));
+                if (c0y0 < 0)
+                {
+                    Console.WriteLine(c0y0);
+                }
+
+            }
+
+            pp0.Add(new PointF(0, midh + d));
+            pp1.Add(new PointF(0, midh - d));
+
+            ggg.FillPolygon(Brushes.DarkRed, pp0.ToArray());
+            ggg.FillPolygon(Brushes.DarkGreen, pp1.ToArray());
+            ggg.DrawLines(Pens.Red, pp0.ToArray());
+            ggg.DrawLines(Pens.Green, pp1.ToArray());
+
+
+            pictureBox1.Image = bm;
+        }
+
+
+        Queue<float[]> fftData = new Queue<float[]>();
+        float[] ccc = new float[FFT_POINTS];
+        float[] nnn = new float[FFT_POINTS];
+
+        int fftQueueCount = 0;
+        void setFFTRes(Complex[] complex)
+        {
+            //if (fftData.Count > 10)
+            //{
+            //    fftData.Clear();
+            //}
+            //if (fftQueueCount++ > 0)
+            //{
+            //    fftQueueCount = 0;
+            //    float[] data = new float[FFT_POINTS];
+            //    for (int i = 0; i < complex.Length; i++)
+            //    {
+            //        data[i] = 1000 * (float)Math.Sqrt(complex[i].X * complex[i].X + complex[i].Y * complex[i].Y);
+            //    }
+            //    fftData.Enqueue(data);
+            //}
+
+
+            nnn = new float[FFT_POINTS];
+            for (int i = 0; i < complex.Length; i++)
+            {
+                nnn[i] = 1000 * (float)Math.Sqrt(complex[i].X * complex[i].X + complex[i].Y * complex[i].Y);
+            }
+
+
+        }
+
+
 
         bool isSpectrumOn = false;
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -1121,6 +1300,11 @@ namespace AlfaPlayer2
             if (!isSpectrumOn)
             {
                 SetTagImage();
+                panel5.Width = 281;
+            }
+            else
+            {
+                panel5.Width = Width;
             }
         }
 
@@ -1167,5 +1351,16 @@ namespace AlfaPlayer2
         }
 
         #endregion file list drag
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            Console.WriteLine("DONE");
+        }
+
+        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            Console.WriteLine("WORK");
+            Library.Instance.RefreshLibrary();
+        }
     }
 }
