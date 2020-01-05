@@ -330,6 +330,7 @@
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Exo 2", 30F);
             this.ForeColor = global::AlfaPlayer2.Properties.Settings.Default.TitleTextColor;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(11, 7, 11, 7);
             this.Name = "MainForm";

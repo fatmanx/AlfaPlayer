@@ -73,15 +73,6 @@ namespace AlfaPlayer2
                     FftCalculated(this, fftArgs);
                 }
             }
-
-            //maxValue = Math.Max(maxValue, value);
-            //minValue = Math.Min(minValue, value);
-            //count++;
-            //if (count >= NotificationCount && NotificationCount > 0)
-            //{
-            //    MaximumCalculated?.Invoke(this, new MaxSampleEventArgs(minValue, maxValue));
-            //    Reset();
-            //}
         }
 
         public WaveFormat WaveFormat => source.WaveFormat;

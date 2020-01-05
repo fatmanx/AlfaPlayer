@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -30,7 +31,7 @@ namespace AlfaPlayer2
 
 
 
-        private AudioFileReader reader;
+
 
 
         private TagLib.File tag;
@@ -239,6 +240,8 @@ namespace AlfaPlayer2
             //OpenFile(groupBox1.Tag.ToString() + Path.DirectorySeparatorChar + listBoxFilePanel.SelectedItem.ToString());
         }
 
+
+        private AudioFileReader reader;
         private void OpenFile(string fn, double pos = 0)
         {
             Console.WriteLine(fn);
@@ -275,12 +278,11 @@ namespace AlfaPlayer2
             {
 
                 reader = new AudioFileReader(fn);
-
                 var aggregator = new SampleAggregator(reader, 256);
-                aggregator.NotificationCount = reader.WaveFormat.SampleRate / 10;
-                aggregator.PerformFFT = true;
-                aggregator.FftCalculated += Aggregator_FftCalculated;
-
+                aggregator .NotificationCount = reader.WaveFormat.SampleRate / 10;
+                aggregator .PerformFFT = true;
+                aggregator .FftCalculated += Aggregator_FftCalculated;
+                
 
                 //sampleChannel = new SampleChannel(reader, true);
                 //sampleChannel.PreVolumeMeter += SampleChannel_PreVolumeMeter;
@@ -312,14 +314,18 @@ namespace AlfaPlayer2
                     //waveViewer1.WaveStream = reader2;
 
                     waveOut = new WaveOut(); // or WaveOutEvent()
-                    waveOut.Init(aggregator);
+                    waveOut.Init(aggregator,true);
                     waveOut.Play();
 
 
                     SaveSettings();
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw ex;
+            }
         }
 
         private void Aggregator_FftCalculated(object sender, FftEventArgs e)
@@ -340,11 +346,13 @@ namespace AlfaPlayer2
                 bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
                 pb1Graphics = pictureBox1.CreateGraphics();
                 pb1Graphics = Graphics.FromImage(bm);
+
             }
             int w = pictureBox1.Width;
             int h = pictureBox1.Height;
             float f = 10f;
             pb1Graphics.Clear(Color.Transparent);
+            //pb1Graphics.DrawImage(cImage, 0, 0,w,h);
 
             float pz0 = 0, pz1 = 0;
 
@@ -377,34 +385,83 @@ namespace AlfaPlayer2
 
         Graphics pb1Graphics;
         Bitmap bm;
-        //private void PostVolumeMeter_StreamVolume(object sender, StreamVolumeEventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (pictureBox1.IsDisposed)
-        //        {
-        //            return;
-        //        }
-        //        if (pb1Graphics == null)
-        //        {
-        //            bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-        //            pb1Graphics = pictureBox1.CreateGraphics();
-        //            pb1Graphics = Graphics.FromImage(bm);
-        //        }
 
-        //        pb1Graphics.Clear(Color.Black);
-        //        pb1Graphics.FillRectangle(Brushes.Red, pictureBox1.Width / 4 - 5, pictureBox1.Height - e.MaxSampleValues[0] * pictureBox1.Height, pictureBox1.Width / 4, 2 * pictureBox1.Height);
-        //        pb1Graphics.FillRectangle(Brushes.Red, pictureBox1.Width / 2 + 5, pictureBox1.Height - e.MaxSampleValues[1] * pictureBox1.Height, pictureBox1.Width / 4, 2 * pictureBox1.Height);
-        //        pictureBox1.Image = bm;
-        //    }
-        //    finally { }
-        //}
 
-        //private void SampleChannel_PreVolumeMeter(object sender, StreamVolumeEventArgs e)
-        //{
-        //}
 
-        //SampleChannel sampleChannel;
+        private static Bitmap Blur(Bitmap image, Int32 blurSize = 3)
+        {
+            return Blur(image, new Rectangle(0, 0, image.Width, image.Height), blurSize);
+        }
+
+        private unsafe static Bitmap Blur(Bitmap image, Rectangle rectangle, Int32 blurSize)
+        {
+            Bitmap blurred = new Bitmap(image.Width, image.Height);
+
+            // make an exact copy of the bitmap provided
+            using (Graphics graphics = Graphics.FromImage(blurred))
+                graphics.DrawImage(image, new Rectangle(0, 0, image.Width, image.Height),
+                    new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
+
+            // Lock the bitmap's bits
+            BitmapData blurredData = blurred.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, blurred.PixelFormat);
+
+            // Get bits per pixel for current PixelFormat
+            int bitsPerPixel = Image.GetPixelFormatSize(blurred.PixelFormat);
+
+            // Get pointer to first line
+            byte* scan0 = (byte*)blurredData.Scan0.ToPointer();
+
+            // look at every pixel in the blur rectangle
+            for (int xx = rectangle.X; xx < rectangle.X + rectangle.Width; xx++)
+            {
+                for (int yy = rectangle.Y; yy < rectangle.Y + rectangle.Height; yy++)
+                {
+                    int avgR = 0, avgG = 0, avgB = 0;
+                    int blurPixelCount = 0;
+
+                    // average the color of the red, green and blue for each pixel in the
+                    // blur size while making sure you don't go outside the image bounds
+                    for (int x = xx; (x < xx + blurSize && x < image.Width); x++)
+                    {
+                        for (int y = yy; (y < yy + blurSize && y < image.Height); y++)
+                        {
+                            // Get pointer to RGB
+                            byte* data = scan0 + y * blurredData.Stride + x * bitsPerPixel / 8;
+
+                            avgB += data[0]; // Blue
+                            avgG += data[1]; // Green
+                            avgR += data[2]; // Red
+
+                            blurPixelCount++;
+                        }
+                    }
+
+                    avgR = avgR / blurPixelCount;
+                    avgG = avgG / blurPixelCount;
+                    avgB = avgB / blurPixelCount;
+
+                    // now that we know the average for the blur size, set each pixel to that color
+                    for (int x = xx; x < xx + blurSize && x < image.Width && x < rectangle.Width; x++)
+                    {
+                        for (int y = yy; y < yy + blurSize && y < image.Height && y < rectangle.Height; y++)
+                        {
+                            // Get pointer to RGB
+                            byte* data = scan0 + y * blurredData.Stride + x * bitsPerPixel / 8;
+
+                            // Change values
+                            data[0] = (byte)avgB;
+                            data[1] = (byte)avgG;
+                            data[2] = (byte)avgR;
+                        }
+                    }
+                }
+            }
+
+            // Unlock the bits
+            blurred.UnlockBits(blurredData);
+
+            return blurred;
+        }
 
 
         private void SeekForward()
@@ -835,6 +892,8 @@ namespace AlfaPlayer2
 
 
         private TagLib.File lastTag;
+        //Bitmap cImage = null;
+
 
         private void SetTagImage()
         {
@@ -844,18 +903,22 @@ namespace AlfaPlayer2
                 {
                     MemoryStream mStream = new MemoryStream();
                     byte[] pData = tag.Tag.Pictures[0].Data.Data;
+                    //Console.WriteLine(tag.Tag.Pictures[0].Data.Checksum);
                     mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
                     Bitmap bm = new Bitmap(mStream, false);
                     mStream.Dispose();
+                    //cImage = Blur(Blur(Blur(bm)));
                     pictureBox1.Image = bm;
                 }
                 else
                 {
+                    //cImage = Blur(Blur(Blur((Bitmap)pictureBox1.InitialImage)));
                     pictureBox1.Image = pictureBox1.InitialImage;
                 }
             }
             else
             {
+                //cImage = Blur(Blur(Blur((Bitmap)pictureBox1.InitialImage)));
                 pictureBox1.Image = pictureBox1.InitialImage;
             }
 
@@ -926,6 +989,7 @@ namespace AlfaPlayer2
                 }
                 else
                 {
+                    //cImage = Blur(Blur(Blur((Bitmap)pictureBox1.InitialImage)));
                     pictureBox1.Image = pictureBox1.InitialImage;
                 }
                 if (waveOut != null)
