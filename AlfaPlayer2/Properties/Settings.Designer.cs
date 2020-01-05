@@ -37,7 +37,7 @@ namespace AlfaPlayer2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("31, 36, 69")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Transparent")]
         public global::System.Drawing.Color TitleBackColor {
             get {
                 return ((global::System.Drawing.Color)(this["TitleBackColor"]));

@@ -6,7 +6,7 @@
       <Value Profile="(Default)">Teal</Value>
     </Setting>
     <Setting Name="TitleBackColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">31, 36, 69</Value>
+      <Value Profile="(Default)">Transparent</Value>
     </Setting>
     <Setting Name="SelectedItemBackColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">DarkCyan</Value>
