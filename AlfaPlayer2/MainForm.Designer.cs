@@ -155,7 +155,7 @@
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 20;
+            this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // backgroundWorker1
@@ -198,6 +198,8 @@
             this.listBoxFilePanel.ShowScrollbar = false;
             this.listBoxFilePanel.Size = new System.Drawing.Size(509, 277);
             this.listBoxFilePanel.TabIndex = 1;
+            this.listBoxFilePanel.Click += new System.EventHandler(this.listBoxFilePanel_Click);
+            this.listBoxFilePanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listBoxFilePanel_MouseClick);
             this.listBoxFilePanel.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxFilePanel_DrawItem);
             this.listBoxFilePanel.DoubleClick += new System.EventHandler(this.listBoxFilePanel_DoubleClick);
             this.listBoxFilePanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxFilePanel_KeyDown);

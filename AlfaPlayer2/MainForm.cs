@@ -283,6 +283,7 @@ namespace AlfaPlayer2
                 reader = new AudioFileReader(fn);
                 var aggregator = new SampleAggregator(reader, FFT_POINTS);
                 aggregator.NotificationCount = reader.WaveFormat.SampleRate / 10;
+                
                 aggregator.PerformFFT = true;
                 aggregator.FftCalculated += Aggregator_FftCalculated;
 
@@ -338,50 +339,51 @@ namespace AlfaPlayer2
             {
                 return;
             }
-
-            setFFTRes(e.Result);
+            
+            setFFTRes(e.Result, e.Signal);
+            
             return;
-            NAudio.Dsp.Complex[] result = e.Result;
+            //NAudio.Dsp.Complex[] result = e.Result;
 
-            if (pictureBox1.IsDisposed)
-            {
-                return;
-            }
-            if (ggg == null)
-            {
-                bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-                ggg = pictureBox1.CreateGraphics();
-                ggg = Graphics.FromImage(bm);
+            //if (pictureBox1.IsDisposed)
+            //{
+            //    return;
+            //}
+            //if (ggg == null)
+            //{
+            //    bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            //    ggg = pictureBox1.CreateGraphics();
+            //    ggg = Graphics.FromImage(bm);
 
-            }
-            int w = pictureBox1.Width;
-            int h = pictureBox1.Height;
-            float f = 10f;
-            ggg.Clear(Color.Transparent);
-            //pb1Graphics.DrawImage(cImage, 0, 0,w,h);
+            //}
+            //int w = pictureBox1.Width;
+            //int h = pictureBox1.Height;
+            //float f = 10f;
+            //ggg.Clear(Color.Transparent);
+            ////pb1Graphics.DrawImage(cImage, 0, 0,w,h);
 
-            float pz0 = 0, pz1 = 0;
+            //float pz0 = 0, pz1 = 0;
 
-            for (int i = 0; i < result.Length / 2; i++)
-            {
-                var x0 = result[i].X;
-                var y0 = result[i].Y;
-                var z0 = f * w * (float)Math.Sqrt(x0 * x0 + y0 * y0);
-                var x1 = result[result.Length - i - 1].X;
-                var y1 = result[result.Length - i - 1].Y;
-                var z1 = f * w * (float)Math.Sqrt(x1 * x1 + y1 * y1);
+            //for (int i = 0; i < result.Length / 2; i++)
+            //{
+            //    var x0 = result[i].X;
+            //    var y0 = result[i].Y;
+            //    var z0 = f * w * (float)Math.Sqrt(x0 * x0 + y0 * y0);
+            //    var x1 = result[result.Length - i - 1].X;
+            //    var y1 = result[result.Length - i - 1].Y;
+            //    var z1 = f * w * (float)Math.Sqrt(x1 * x1 + y1 * y1);
 
-                ggg.DrawLine(p1, 2 * i, h / 2 - 1, 2 * i, h / 2 - 1 + z0);
-                ggg.DrawLine(p2, 2 * i, h / 2 + 1, 2 * i, h / 2 + 1 - z1);
-                ggg.DrawLine(pl1, 2 * i - 1, h / 2 - 1 + pz0, 2 * i + 1, h / 2 - 1 + z0);
-                ggg.DrawLine(pl2, 2 * i - 1, h / 2 + 2 - pz1, 2 * i + 1, h / 2 + 2 - z1);
+            //    ggg.DrawLine(p1, 2 * i, h / 2 - 1, 2 * i, h / 2 - 1 + z0);
+            //    ggg.DrawLine(p2, 2 * i, h / 2 + 1, 2 * i, h / 2 + 1 - z1);
+            //    ggg.DrawLine(pl1, 2 * i - 1, h / 2 - 1 + pz0, 2 * i + 1, h / 2 - 1 + z0);
+            //    ggg.DrawLine(pl2, 2 * i - 1, h / 2 + 2 - pz1, 2 * i + 1, h / 2 + 2 - z1);
 
-                pz0 = z0;
-                pz1 = z1;
+            //    pz0 = z0;
+            //    pz1 = z1;
 
-            }
+            //}
 
-            pictureBox1.Image = bm;
+            //pictureBox1.Image = bm;
 
         }
         Pen pl1 = new Pen(Color.Red, 2);
@@ -810,7 +812,7 @@ namespace AlfaPlayer2
         {
             float pos = ((float)e.X / (textProgressBar.Width - textProgressBar.Padding.Left - textProgressBar.Padding.Right)).Clamp(0, 0.999f);
 
-            Console.WriteLine(pos);
+            Console.WriteLine(">>> pos {0}", pos);
 
             if (reader != null && reader.CanSeek)
             {
@@ -1026,7 +1028,7 @@ namespace AlfaPlayer2
         float[] lfd = new float[FFT_POINTS];
         float[] cfd = new float[FFT_POINTS];
         int fftStep = 0;
-        const int FFT_POINTS = 1024;
+        const int FFT_POINTS = 512;
 
         bool IsPlaying()
         {
@@ -1050,7 +1052,7 @@ namespace AlfaPlayer2
 
             for (int i = 0; i < FFT_POINTS; i++)
             {
-                ccc[i] = (ccc[i] + nnn[i]) / 1.5f;
+                ccc[i] = (ccc[i] + nnn[i]) /2f;
             }
 
             if (pictureBox1.IsDisposed)
@@ -1067,7 +1069,7 @@ namespace AlfaPlayer2
             int w = pictureBox1.Width;
             int h = pictureBox1.Height;
             int midh = h / 2;
-            float f = 3f;
+            float f = 5f;
             ggg.Clear(Color.Transparent);
 
 
@@ -1079,31 +1081,41 @@ namespace AlfaPlayer2
             //pp0.Add(new PointF(0, h / 2 + d));
             //pp1.Add(new PointF(0, h / 2 - d));
 
-            for (int i = 0; i < FFT_POINTS / 2; i++)
+            int fftp2 = FFT_POINTS / 2;
+            float wf = .5f * pictureBox1.Width / fftp2;
+
+            for (int i = 0; i < fftp2; i++)
             {
                 int ii = i * 2;
                 int j = FFT_POINTS - i - 1;
-                Console.WriteLine("{0} {1}", i, j);
-                float c0y0 = f * ccc[i];
-                float c1y0 = -f * ccc[j];
+                //Console.WriteLine("{0} {1}", i, j);
+                float c0y0 = f * ccc[i] * (float)Math.Log(i / 2.5f + 1);
+                float c1y0 = -f * ccc[j] * (float)Math.Log(i / 2.5f + 1);
 
-                pp0.Add(new PointF(ii, d + midh + c0y0));
-                pp1.Add(new PointF(ii, -d + midh + c1y0));
-
+                pp0.Add(new PointF(ii * wf, d + midh + c0y0));
+                pp1.Add(new PointF(ii * wf, -d + midh + c1y0));
             }
+
 
             pp0.Add(new PointF(0, midh + d));
             pp1.Add(new PointF(0, midh - d));
 
-            ggg.FillPolygon(Brushes.DarkRed, pp0.ToArray());
-            ggg.FillPolygon(Brushes.DarkGreen, pp1.ToArray());
-            ggg.DrawLines(Pens.Red, pp0.ToArray());
-            ggg.DrawLines(Pens.Green, pp1.ToArray());
+            ggg.FillPolygon(brFillRed, pp0.ToArray());
+            ggg.FillPolygon(brFillGreen, pp1.ToArray());
+            ggg.DrawLines(penRed, pp0.ToArray());
+            ggg.DrawLines(penGreen, pp1.ToArray());
 
 
             pictureBox1.Image = bm;
 
         }
+
+        Brush brFillRed = Brushes.DarkMagenta;
+        Brush brFillGreen = Brushes.DarkCyan;
+
+        Pen penRed = Pens.Magenta;
+        Pen penGreen = Pens.Cyan;
+
 
         void Draw1()
         {
@@ -1202,7 +1214,7 @@ namespace AlfaPlayer2
         float[] nnn = new float[FFT_POINTS];
 
         int fftQueueCount = 0;
-        void setFFTRes(Complex[] complex)
+        void setFFTRes(Complex[] complex, float[] signal)
         {
             //if (fftData.Count > 10)
             //{
@@ -1220,10 +1232,13 @@ namespace AlfaPlayer2
             //}
 
 
+            Console.WriteLine(signal.Length);
+
             nnn = new float[FFT_POINTS];
             for (int i = 0; i < complex.Length; i++)
             {
                 nnn[i] = 1000 * (float)Math.Sqrt(complex[i].X * complex[i].X + complex[i].Y * complex[i].Y);
+                
             }
 
 
@@ -1259,7 +1274,7 @@ namespace AlfaPlayer2
         private void listBoxFilePanel_MouseDown(object sender, MouseEventArgs e)
         {
             startY = e.Y;
-            Console.WriteLine(e.Y);
+            Console.WriteLine("e.Y {0}", e.Y);
         }
 
         private void listBoxFilePanel_MouseMove(object sender, MouseEventArgs e)
@@ -1299,6 +1314,17 @@ namespace AlfaPlayer2
         {
             Console.WriteLine("WORK");
             Library.Instance.RefreshLibrary();
+        }
+
+        private void listBoxFilePanel_Click(object sender, EventArgs e)
+        {
+            //OpenFileOrDirectory();
+        }
+
+        private void listBoxFilePanel_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.X < 100) OpenFileOrDirectory();
+            //Console.WriteLine("{0}  {1}", sender, e.X);
         }
     }
 }
