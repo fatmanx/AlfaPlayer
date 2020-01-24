@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -343,7 +344,7 @@ namespace AlfaPlayer2
 
         private void Aggregator_FftCalculated1(object sender, FFTEventArgsDual e)
         {
-            if (!isSpectrumOn)
+            if (!IsSpectrumOn)
             {
                 return;
             }
@@ -352,21 +353,21 @@ namespace AlfaPlayer2
             for (int i = 0; i < e.Result0.Length / 2; i++)
             {
                 res[i] = e.Result0[i];
-                res[e.Result0.Length - i-1] = e.Result1[i];
+                res[e.Result0.Length - i - 1] = e.Result1[i];
             }
 
 
-            setFFTRes(res, null);
+            setFFTRes(res);
         }
 
         private void Aggregator_FftCalculated(object sender, FftEventArgs e)
         {
-            if (!isSpectrumOn)
+            if (!IsSpectrumOn)
             {
                 return;
             }
 
-            setFFTRes(e.Result, e.Signal);
+            setFFTRes(e.Result);
 
             return;
             //NAudio.Dsp.Complex[] result = e.Result;
@@ -505,7 +506,7 @@ namespace AlfaPlayer2
             lastFile = Properties.Settings.Default.LastFile;
             lastFilePos = Properties.Settings.Default.LastFilePos;
             maxVolume = Properties.Settings.Default.MaxVolume;
-
+            IsSpectrumOn = Properties.Settings.Default.IsSpectrumOn;
 
 
             InitFilePanel();
@@ -1071,20 +1072,16 @@ namespace AlfaPlayer2
         void Draw2()
         {
 
-            if (!isSpectrumOn || !IsPlaying())
+            if (!IsSpectrumOn || !IsPlaying() || pictureBox1.IsDisposed)
             {
                 return;
             }
 
             for (int i = 0; i < FFT_POINTS; i++)
             {
-                ccc[i] = (ccc[i] + nnn[i]) / 2f;
+                ccc[i] = (ccc[i] + nnn[i]) / 1.3f;
             }
 
-            if (pictureBox1.IsDisposed)
-            {
-                return;
-            }
             if (ggg == null)
             {
                 bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
@@ -1095,7 +1092,7 @@ namespace AlfaPlayer2
             int w = pictureBox1.Width;
             int h = pictureBox1.Height;
             int midh = h / 2;
-            float f = 5f;
+            float f = .75f;
             ggg.Clear(Color.Transparent);
 
 
@@ -1123,13 +1120,20 @@ namespace AlfaPlayer2
             }
 
 
+
+
             pp0.Add(new PointF(0, midh + d));
             pp1.Add(new PointF(0, midh - d));
 
+            ggg.SmoothingMode = SmoothingMode.AntiAlias;
+            ggg.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            ggg.DrawLines(penRed2, pp0.ToArray());
+            ggg.DrawLines(penGreen2, pp1.ToArray());
             ggg.FillPolygon(brFillRed, pp0.ToArray());
             ggg.FillPolygon(brFillGreen, pp1.ToArray());
             ggg.DrawLines(penRed, pp0.ToArray());
             ggg.DrawLines(penGreen, pp1.ToArray());
+
 
 
             pictureBox1.Image = bm;
@@ -1141,11 +1145,13 @@ namespace AlfaPlayer2
 
         Pen penRed = Pens.Magenta;
         Pen penGreen = Pens.Cyan;
+        Pen penRed2 = new Pen(Color.FromArgb(100, 255, 0, 255), 3);
+        Pen penGreen2 = new Pen(Color.FromArgb(100, 0, 255, 255), 3);
 
 
         void Draw1()
         {
-            if (!isSpectrumOn || !IsPlaying())
+            if (!IsSpectrumOn || !IsPlaying() || pictureBox1.IsDisposed)
             {
                 return;
             }
@@ -1172,10 +1178,7 @@ namespace AlfaPlayer2
 
             float ss = (float)fftStep / FFT_STEP_COUNT;
 
-            if (pictureBox1.IsDisposed)
-            {
-                return;
-            }
+
             if (ggg == null)
             {
                 bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
@@ -1240,7 +1243,7 @@ namespace AlfaPlayer2
         float[] nnn = new float[FFT_POINTS];
 
         int fftQueueCount = 0;
-        void setFFTRes(Complex[] complex, float[] signal)
+        void setFFTRes(Complex[] complex)
         {
             //if (fftData.Count > 10)
             //{
@@ -1258,7 +1261,7 @@ namespace AlfaPlayer2
             //}
 
 
-            
+
 
             nnn = new float[FFT_POINTS];
             for (int i = 0; i < complex.Length; i++)
@@ -1270,21 +1273,34 @@ namespace AlfaPlayer2
 
         }
 
+        private bool isSpectrumOn = false;
+
+        public bool IsSpectrumOn
+        {
+            get { return isSpectrumOn; }
+            set
+            {
+                isSpectrumOn = value;
+                Properties.Settings.Default.IsSpectrumOn = value;
+                SaveSettings();
+                if (!IsSpectrumOn)
+                {
+                    SetTagImage();
+                    panel5.Width = 281;
+                }
+                else
+                {
+                    panel5.Width = Width;
+                }
+
+            }
+        }
 
 
-        bool isSpectrumOn = false;
+
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            isSpectrumOn = !isSpectrumOn;
-            if (!isSpectrumOn)
-            {
-                SetTagImage();
-                panel5.Width = 281;
-            }
-            else
-            {
-                panel5.Width = Width;
-            }
+            IsSpectrumOn = !IsSpectrumOn;
         }
 
         private void listBoxFilePanel_DoubleClick(object sender, EventArgs e)

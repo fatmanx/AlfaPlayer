@@ -44,7 +44,6 @@ namespace AlfaPlayer2
         {
             return (x & (x - 1)) == 0;
         }
-
         private void Add(float value0, float value1)
         {
             if (PerformFFT && FftCalculated != null)
@@ -56,11 +55,14 @@ namespace AlfaPlayer2
                 fftPos++;
                 if (fftPos >= fftBuffer0.Length)
                 {
+
                     fftPos = 0;
+
                     // 1024 = 2^10
                     FastFourierTransform.FFT(true, m, fftBuffer0);
                     FastFourierTransform.FFT(true, m, fftBuffer1);
                     FftCalculated(this, fftArgs);
+                    //Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>");
                 }
             }
         }
@@ -70,6 +72,7 @@ namespace AlfaPlayer2
         public int Read(float[] buffer, int offset, int count)
         {
             var samplesRead = source.Read(buffer, offset, count);
+            
 
             for (int n = 0; n < samplesRead; n += channels)
             {

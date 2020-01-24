@@ -262,5 +262,17 @@ namespace AlfaPlayer2.Properties {
                 this["RootFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsSpectrumOn {
+            get {
+                return ((bool)(this["IsSpectrumOn"]));
+            }
+            set {
+                this["IsSpectrumOn"] = value;
+            }
+        }
     }
 }
