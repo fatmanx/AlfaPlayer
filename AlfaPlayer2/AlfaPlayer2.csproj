@@ -135,6 +135,7 @@
     <Compile Include="CPadding.cs" />
     <Compile Include="CustomExtensions.cs" />
     <Compile Include="FftEventArgs.cs" />
+    <Compile Include="FFTEventArgsDual.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -144,6 +145,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleAggregatorDual.cs" />
     <Compile Include="SampleAggregator.cs" />
     <Compile Include="ScrollLabel.cs">
       <SubType>Component</SubType>

@@ -281,11 +281,20 @@ namespace AlfaPlayer2
             {
 
                 reader = new AudioFileReader(fn);
-                var aggregator = new SampleAggregator(reader, FFT_POINTS);
-                aggregator.NotificationCount = reader.WaveFormat.SampleRate / 10;
-                
+                ////////////var aggregator = new SampleAggregator(reader, FFT_POINTS);
+                ////////////aggregator.NotificationCount = reader.WaveFormat.SampleRate / 10;
+
+                ////////////aggregator.PerformFFT = true;
+                ////////////aggregator.FftCalculated += Aggregator_FftCalculated;
+
+
+                var aggregator = new SampleAggregatorDual(reader, FFT_POINTS);
+
+
                 aggregator.PerformFFT = true;
-                aggregator.FftCalculated += Aggregator_FftCalculated;
+                aggregator.FftCalculated += Aggregator_FftCalculated1;
+
+
 
 
                 //sampleChannel = new SampleChannel(reader, true);
@@ -332,6 +341,23 @@ namespace AlfaPlayer2
             }
         }
 
+        private void Aggregator_FftCalculated1(object sender, FFTEventArgsDual e)
+        {
+            if (!isSpectrumOn)
+            {
+                return;
+            }
+
+            Complex[] res = new Complex[e.Result0.Length];
+            for (int i = 0; i < e.Result0.Length / 2; i++)
+            {
+                res[i] = e.Result0[i];
+                res[e.Result0.Length - i-1] = e.Result1[i];
+            }
+
+
+            setFFTRes(res, null);
+        }
 
         private void Aggregator_FftCalculated(object sender, FftEventArgs e)
         {
@@ -339,9 +365,9 @@ namespace AlfaPlayer2
             {
                 return;
             }
-            
+
             setFFTRes(e.Result, e.Signal);
-            
+
             return;
             //NAudio.Dsp.Complex[] result = e.Result;
 
@@ -1052,7 +1078,7 @@ namespace AlfaPlayer2
 
             for (int i = 0; i < FFT_POINTS; i++)
             {
-                ccc[i] = (ccc[i] + nnn[i]) /2f;
+                ccc[i] = (ccc[i] + nnn[i]) / 2f;
             }
 
             if (pictureBox1.IsDisposed)
@@ -1232,13 +1258,13 @@ namespace AlfaPlayer2
             //}
 
 
-            Console.WriteLine(signal.Length);
+            
 
             nnn = new float[FFT_POINTS];
             for (int i = 0; i < complex.Length; i++)
             {
                 nnn[i] = 1000 * (float)Math.Sqrt(complex[i].X * complex[i].X + complex[i].Y * complex[i].Y);
-                
+
             }
 
 
